@@ -1,11 +1,15 @@
 
 import { ApplicationFormData, ContactMessage } from '../types';
 
+export type UserRole = 'admin' | 'viewer';
+
 export interface Employee {
   id: string;
   name: string;
-  role: string;
+  role: string; // The job title
+  systemRole: UserRole; // RBAC role
   email: string;
+  password?: string;
   dateAdded: string;
 }
 
@@ -28,7 +32,7 @@ const STORAGE_KEYS = {
   EMPLOYEES: 'lipila_employees',
   CUSTOMERS: 'lipila_customers',
   MESSAGES: 'lipila_contact_messages',
-  ADMIN_AUTH: 'lipila_admin_logged_in'
+  CURRENT_USER: 'lipila_current_user'
 };
 
 const getStorage = <T>(key: string, defaultValue: T): T => {
@@ -40,6 +44,29 @@ const setStorage = (key: string, data: any) => {
   localStorage.setItem(key, JSON.stringify(data));
 };
 
+const seedInitialAdmin = () => {
+  const employees = getStorage<Employee[]>(STORAGE_KEYS.EMPLOYEES, []);
+
+  const adminExists = employees.some(
+    e => e.email === 'admin@lipila.co.zm'
+  );
+
+  if (!adminExists) {
+    const defaultAdmin: Employee = {
+      id: 'admin-001',
+      name: 'System Admin',
+      role: 'Administrator',
+      systemRole: 'admin',
+      email: 'admin@lipila.co.zm',
+      password: 'password123',
+      dateAdded: new Date().toISOString()
+    };
+
+    setStorage(STORAGE_KEYS.EMPLOYEES, [...employees, defaultAdmin]);
+  }
+};
+
+seedInitialAdmin();
 export const db = {
   // Applications
   getApplications: (): Application[] => getStorage(STORAGE_KEYS.APPLICATIONS, []),
@@ -119,7 +146,17 @@ export const db = {
   },
 
   // Auth
-  isAdminLoggedIn: () => localStorage.getItem(STORAGE_KEYS.ADMIN_AUTH) === 'true',
-  login: () => localStorage.setItem(STORAGE_KEYS.ADMIN_AUTH, 'true'),
-  logout: () => localStorage.removeItem(STORAGE_KEYS.ADMIN_AUTH)
+  // Added helper to check if user is logged in to resolve error in App.tsx
+  isAdminLoggedIn: (): boolean => !!db.getCurrentUser(),
+  getCurrentUser: (): Employee | null => getStorage(STORAGE_KEYS.CURRENT_USER, null),
+  authenticate: (email: string, password: string): Employee | null => {
+    const employees = db.getEmployees();
+    const user = employees.find(e => e.email === email && e.password === password);
+    if (user) {
+      setStorage(STORAGE_KEYS.CURRENT_USER, user);
+      return user;
+    }
+    return null;
+  },
+  logout: () => localStorage.removeItem(STORAGE_KEYS.CURRENT_USER)
 };

@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { 
   Users, Briefcase, UserPlus, Database, Search, 
   LogOut, CheckCircle, XCircle, Clock, Trash2, Plus,
-  MessageSquare, Mail, User, Calendar
+  MessageSquare, Mail, User, Calendar, Shield, ShieldAlert
 } from 'lucide-react';
-import { db, Application, Employee, Customer } from '../../services/database';
+import { db, Application, Employee, Customer, UserRole } from '../../services/database';
 import { ContactMessage } from '../../types';
 
 interface DashboardProps {
@@ -13,6 +13,7 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
+  const [currentUser, setCurrentUser] = useState<Employee | null>(null);
   const [activeTab, setActiveTab] = useState<'applications' | 'employees' | 'customers' | 'messages'>('applications');
   const [applications, setApplications] = useState<Application[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -23,12 +24,22 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
   // Form states
   const [showAddEmployee, setShowAddEmployee] = useState(false);
   const [showAddCustomer, setShowAddCustomer] = useState(false);
-  const [newEmployee, setNewEmployee] = useState({ name: '', email: '', role: '' });
+  const [newEmployee, setNewEmployee] = useState({ 
+    name: '', 
+    email: '', 
+    role: '', 
+    password: 'password123', 
+    systemRole: 'viewer' as UserRole 
+  });
   const [newCustomer, setNewCustomer] = useState({ name: '', company: '', email: '', status: 'lead' as const });
 
   useEffect(() => {
+    const user = db.getCurrentUser();
+    setCurrentUser(user);
     refreshData();
   }, []);
+
+  const isAdmin = currentUser?.systemRole === 'admin';
 
   const refreshData = () => {
     setApplications(db.getApplications());
@@ -38,16 +49,19 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
   };
 
   const handleUpdateApplicationStatus = (id: string, status: Application['status']) => {
+    if (!isAdmin) return alert('Restricted: Admin role required for this action.');
     db.updateApplicationStatus(id, status);
     refreshData();
   };
 
   const handleUpdateMessageStatus = (id: string, status: ContactMessage['status']) => {
+    if (!isAdmin) return alert('Restricted: Admin role required for this action.');
     db.updateMessageStatus(id, status);
     refreshData();
   };
 
   const handleDeleteMessage = (id: string) => {
+    if (!isAdmin) return alert('Restricted: Admin role required for this action.');
     if (confirm('Are you sure you want to delete this message?')) {
       db.deleteMessage(id);
       refreshData();
@@ -55,6 +69,8 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
   };
 
   const handleDeleteEmployee = (id: string) => {
+    if (!isAdmin) return alert('Restricted: Admin role required for this action.');
+    if (id === currentUser?.id) return alert('You cannot delete your own account.');
     if (confirm('Remove employee from team?')) {
       db.deleteEmployee(id);
       refreshData();
@@ -62,6 +78,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
   };
 
   const handleDeleteCustomer = (id: string) => {
+    if (!isAdmin) return alert('Restricted: Admin role required for this action.');
     if (confirm('Remove customer record?')) {
       db.deleteCustomer(id);
       refreshData();
@@ -70,14 +87,16 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
 
   const handleAddEmployee = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isAdmin) return;
     db.addEmployee(newEmployee);
-    setNewEmployee({ name: '', email: '', role: '' });
+    setNewEmployee({ name: '', email: '', role: '', password: 'password123', systemRole: 'viewer' });
     setShowAddEmployee(false);
     refreshData();
   };
 
   const handleAddCustomer = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isAdmin) return;
     db.addCustomer(newCustomer);
     setNewCustomer({ name: '', company: '', email: '', status: 'lead' });
     setShowAddCustomer(false);
@@ -124,13 +143,27 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
           ))}
         </nav>
 
-        <button 
-          onClick={onLogout}
-          className="mt-auto flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-400 hover:text-red-400 hover:bg-red-400/10 transition-all"
-        >
-          <LogOut size={20} />
-          <span className="font-bold">Logout</span>
-        </button>
+        <div className="mb-6 px-2 py-4 border-t border-slate-800">
+          <div className="flex items-center space-x-3 mb-4">
+            <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs">
+              {currentUser?.name.charAt(0)}
+            </div>
+            <div className="overflow-hidden">
+              <p className="text-xs font-bold text-white truncate">{currentUser?.name}</p>
+              <div className="flex items-center text-[10px] text-slate-400">
+                {currentUser?.systemRole === 'admin' ? <Shield size={10} className="mr-1 text-emerald-400" /> : <Shield size={10} className="mr-1 text-amber-400" />}
+                <span className="capitalize">{currentUser?.systemRole}</span>
+              </div>
+            </div>
+          </div>
+          <button 
+            onClick={onLogout}
+            className="w-full flex items-center space-x-3 px-2 py-2 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-400/10 transition-all text-sm"
+          >
+            <LogOut size={16} />
+            <span className="font-bold">Logout</span>
+          </button>
+        </div>
       </aside>
 
       {/* Main Content */}
@@ -152,26 +185,40 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            {activeTab === 'employees' && (
-              <button 
-                onClick={() => setShowAddEmployee(true)}
-                className="bg-indigo-600 text-white px-4 py-2 rounded-xl font-bold flex items-center space-x-2"
-              >
-                <Plus size={18} />
-                <span>Add Employee</span>
-              </button>
-            )}
-            {activeTab === 'customers' && (
-              <button 
-                onClick={() => setShowAddCustomer(true)}
-                className="bg-indigo-600 text-white px-4 py-2 rounded-xl font-bold flex items-center space-x-2"
-              >
-                <Plus size={18} />
-                <span>Add Customer</span>
-              </button>
+            {isAdmin && (
+              <>
+                {activeTab === 'employees' && (
+                  <button 
+                    onClick={() => setShowAddEmployee(true)}
+                    className="bg-indigo-600 text-white px-4 py-2 rounded-xl font-bold flex items-center space-x-2"
+                  >
+                    <Plus size={18} />
+                    <span>Add Employee</span>
+                  </button>
+                )}
+                {activeTab === 'customers' && (
+                  <button 
+                    onClick={() => setShowAddCustomer(true)}
+                    className="bg-indigo-600 text-white px-4 py-2 rounded-xl font-bold flex items-center space-x-2"
+                  >
+                    <Plus size={18} />
+                    <span>Add Customer</span>
+                  </button>
+                )}
+              </>
             )}
           </div>
         </header>
+
+        {!isAdmin && (
+          <div className="mb-10 p-4 bg-amber-50 border border-amber-100 rounded-2xl flex items-center space-x-4">
+            <ShieldAlert className="text-amber-500" />
+            <div>
+              <p className="text-sm font-bold text-amber-900">Read-Only Access</p>
+              <p className="text-xs text-amber-700">You can view data but cannot perform write or delete operations.</p>
+            </div>
+          </div>
+        )}
 
         {/* Stats Summary */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
@@ -235,23 +282,27 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
                       <div className="text-xs text-slate-400 flex items-center mr-2">
                         <Calendar size={12} className="mr-1" /> {new Date(msg.dateSent).toLocaleDateString()}
                       </div>
-                      <button 
-                        onClick={() => handleUpdateMessageStatus(msg.id, 'read')}
-                        className={`p-2 rounded-lg transition-colors ${msg.status === 'new' ? 'text-indigo-600 hover:bg-indigo-100' : 'text-slate-300'}`}
-                        title="Mark as read"
-                      >
-                        <CheckCircle size={18} />
-                      </button>
-                      <button 
-                        onClick={() => handleDeleteMessage(msg.id)}
-                        className="p-2 text-slate-300 hover:text-red-600 rounded-lg transition-colors"
-                        title="Delete message"
-                      >
-                        <Trash2 size={18} />
-                      </button>
+                      {isAdmin && (
+                        <>
+                          <button 
+                            onClick={() => handleUpdateMessageStatus(msg.id, 'read')}
+                            className={`p-2 rounded-lg transition-colors ${msg.status === 'new' ? 'text-indigo-600 hover:bg-indigo-100' : 'text-slate-300'}`}
+                            title="Mark as read"
+                          >
+                            <CheckCircle size={18} />
+                          </button>
+                          <button 
+                            onClick={() => handleDeleteMessage(msg.id)}
+                            className="p-2 text-slate-300 hover:text-red-600 rounded-lg transition-colors"
+                            title="Delete message"
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
-                  <p className="text-slate-600 text-sm leading-relaxed pl-13">
+                  <p className="text-slate-600 text-sm leading-relaxed">
                     {msg.message}
                   </p>
                 </div>
@@ -298,20 +349,22 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
                       <div className="text-[10px] text-slate-400 mt-1">{new Date(app.dateSubmitted).toLocaleDateString()}</div>
                     </td>
                     <td className="px-6 py-6 text-right">
-                      <div className="flex justify-end space-x-2">
-                        <button 
-                          onClick={() => handleUpdateApplicationStatus(app.id, 'accepted')}
-                          className="p-2 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
-                        >
-                          <CheckCircle size={18} />
-                        </button>
-                        <button 
-                          onClick={() => handleUpdateApplicationStatus(app.id, 'rejected')}
-                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                        >
-                          <XCircle size={18} />
-                        </button>
-                      </div>
+                      {isAdmin && (
+                        <div className="flex justify-end space-x-2">
+                          <button 
+                            onClick={() => handleUpdateApplicationStatus(app.id, 'accepted')}
+                            className="p-2 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                          >
+                            <CheckCircle size={18} />
+                          </button>
+                          <button 
+                            onClick={() => handleUpdateApplicationStatus(app.id, 'rejected')}
+                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          >
+                            <XCircle size={18} />
+                          </button>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -319,16 +372,21 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
                 {activeTab === 'employees' && filteredData().map((emp: any) => (
                   <tr key={emp.id} className="hover:bg-slate-50 transition-colors">
                     <td className="px-6 py-6">
-                      <div className="font-bold text-slate-900">{emp.name}</div>
+                      <div className="flex items-center space-x-2">
+                        <div className="font-bold text-slate-900">{emp.name}</div>
+                        {emp.systemRole === 'admin' ? <Shield size={12} className="text-emerald-500" /> : <Shield size={12} className="text-amber-500" />}
+                      </div>
                       <div className="text-xs text-slate-500 uppercase tracking-tight">{emp.role}</div>
                     </td>
                     <td className="px-6 py-6 text-sm text-slate-600">{emp.email}</td>
                     <td className="px-6 py-6">
-                      <div className="text-sm font-medium text-slate-600">Added</div>
+                      <div className="text-sm font-medium text-slate-600 capitalize">{emp.systemRole}</div>
                       <div className="text-xs text-slate-400">{new Date(emp.dateAdded).toLocaleDateString()}</div>
                     </td>
                     <td className="px-6 py-6 text-right">
-                      <button onClick={() => handleDeleteEmployee(emp.id)} className="p-2 text-slate-400 hover:text-red-600 transition-colors"><Trash2 size={18} /></button>
+                      {isAdmin && emp.id !== currentUser?.id && (
+                        <button onClick={() => handleDeleteEmployee(emp.id)} className="p-2 text-slate-400 hover:text-red-600 transition-colors"><Trash2 size={18} /></button>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -348,7 +406,9 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
                       </span>
                     </td>
                     <td className="px-6 py-6 text-right">
-                      <button onClick={() => handleDeleteCustomer(cust.id)} className="p-2 text-slate-400 hover:text-red-600 transition-colors"><Trash2 size={18} /></button>
+                      {isAdmin && (
+                        <button onClick={() => handleDeleteCustomer(cust.id)} className="p-2 text-slate-400 hover:text-red-600 transition-colors"><Trash2 size={18} /></button>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -370,24 +430,44 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
       {/* Modals */}
       {showAddEmployee && (
         <div className="fixed inset-0 z-[100] bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-[2rem] w-full max-w-md p-8 animate-in zoom-in duration-300">
+          <div className="bg-white rounded-[2rem] w-full max-w-md p-8 animate-in zoom-in duration-300 shadow-2xl">
             <h3 className="text-2xl font-bold mb-6">New Employee</h3>
             <form onSubmit={handleAddEmployee} className="space-y-4">
-              <input 
-                type="text" placeholder="Name" required 
-                className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl"
-                value={newEmployee.name} onChange={e => setNewEmployee({...newEmployee, name: e.target.value})}
-              />
-              <input 
-                type="email" placeholder="Email" required 
-                className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl"
-                value={newEmployee.email} onChange={e => setNewEmployee({...newEmployee, email: e.target.value})}
-              />
-              <input 
-                type="text" placeholder="Role" required 
-                className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl"
-                value={newEmployee.role} onChange={e => setNewEmployee({...newEmployee, role: e.target.value})}
-              />
+              <div>
+                <label className="text-xs font-bold text-slate-400 uppercase mb-1 block">Full Name</label>
+                <input 
+                  type="text" placeholder="Mwansa Zulu" required 
+                  className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl"
+                  value={newEmployee.name} onChange={e => setNewEmployee({...newEmployee, name: e.target.value})}
+                />
+              </div>
+              <div>
+                <label className="text-xs font-bold text-slate-400 uppercase mb-1 block">Work Email</label>
+                <input 
+                  type="email" placeholder="m.zulu@lipila.co.zm" required 
+                  className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl"
+                  value={newEmployee.email} onChange={e => setNewEmployee({...newEmployee, email: e.target.value})}
+                />
+              </div>
+              <div>
+                <label className="text-xs font-bold text-slate-400 uppercase mb-1 block">Job Title</label>
+                <input 
+                  type="text" placeholder="Software Engineer" required 
+                  className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl"
+                  value={newEmployee.role} onChange={e => setNewEmployee({...newEmployee, role: e.target.value})}
+                />
+              </div>
+              <div>
+                <label className="text-xs font-bold text-slate-400 uppercase mb-1 block">System Access Role</label>
+                <select 
+                  className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl"
+                  value={newEmployee.systemRole} 
+                  onChange={e => setNewEmployee({...newEmployee, systemRole: e.target.value as UserRole})}
+                >
+                  <option value="viewer">Viewer (Read-Only)</option>
+                  <option value="admin">Administrator (Full Access)</option>
+                </select>
+              </div>
               <div className="flex space-x-3 pt-4">
                 <button type="button" onClick={() => setShowAddEmployee(false)} className="flex-1 py-3 font-bold text-slate-600">Cancel</button>
                 <button type="submit" className="flex-1 py-3 bg-indigo-600 text-white rounded-xl font-bold">Add Team Member</button>
@@ -399,7 +479,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
 
       {showAddCustomer && (
         <div className="fixed inset-0 z-[100] bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-[2rem] w-full max-w-md p-8 animate-in zoom-in duration-300">
+          <div className="bg-white rounded-[2rem] w-full max-w-md p-8 animate-in zoom-in duration-300 shadow-2xl">
             <h3 className="text-2xl font-bold mb-6">New Customer Lead</h3>
             <form onSubmit={handleAddCustomer} className="space-y-4">
               <input 

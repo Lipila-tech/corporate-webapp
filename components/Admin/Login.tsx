@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Lock, User, ArrowRight } from 'lucide-react';
+import { Lock, Mail, ArrowRight } from 'lucide-react';
 import { db } from '../../services/database';
 
 interface LoginProps {
@@ -8,18 +8,17 @@ interface LoginProps {
 }
 
 const Login: React.FC<LoginProps> = ({ onLogin }) => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simple admin check for demo purposes
-    if (username === 'admin' && password === 'lipila2025') {
-      db.login();
+    const user = db.authenticate(email, password);
+    if (user) {
       onLogin();
     } else {
-      setError('Invalid credentials. Hint: admin / lipila2025');
+      setError('Invalid email or password.');
     }
   };
 
@@ -27,8 +26,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-[2.5rem] shadow-2xl overflow-hidden p-10">
         <div className="text-center mb-10">
-          <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Lock className="text-white" />
+          <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-white">
+            <Lock />
           </div>
           <h2 className="text-3xl font-extrabold text-slate-900">Admin Access</h2>
           <p className="text-slate-500 mt-2">Lipila Technologies Backend</p>
@@ -36,16 +35,16 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
-            <label className="block text-sm font-bold text-slate-700 mb-2">Username</label>
+            <label className="block text-sm font-bold text-slate-700 mb-2">Email Address</label>
             <div className="relative">
-              <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
               <input
-                type="text"
+                type="email"
                 required
                 className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
-                placeholder="admin"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                placeholder="email@lipila.co.zm"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
           </div>
@@ -65,7 +64,11 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             </div>
           </div>
 
-          {error && <p className="text-red-500 text-sm font-medium text-center">{error}</p>}
+          {error && (
+            <div className="p-3 bg-red-50 border border-red-100 rounded-xl">
+              <p className="text-red-500 text-xs font-medium text-center">{error}</p>
+            </div>
+          )}
 
           <button
             type="submit"
@@ -74,6 +77,13 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             Sign In <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </button>
         </form>
+
+        <div className="mt-8 text-center">
+          <p className="text-xs text-slate-400">
+            For security purposes, access is restricted to authorized personnel. 
+            Passwords must be updated every 90 days.
+          </p>
+        </div>
       </div>
     </div>
   );
