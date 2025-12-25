@@ -1,5 +1,5 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://photos.app.goo.gl/q9nizu1fkcSZgjok6"/>
+<img width="1200" height="475" alt="GHBanner" src="./assets/images/banner.png" />
 </div>
 
 # Lipila Technologes Limited 
