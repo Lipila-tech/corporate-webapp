@@ -1,0 +1,8 @@
+{
+  "name": "Lipila Technologies Limited",
+  "description": "Official corporate website for Lipila Technologies, a leading Zambian SaaS and payment systems provider.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
