@@ -29,7 +29,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <div className="text-slate-400 text-sm">Email Support</div>
-                  <div className="text-xl font-bold">hello@lipila.co.zm</div>
+                  <div className="text-xl font-bold">lipilatechnologies@gmail.com</div>
                 </div>
               </div>
               
@@ -39,7 +39,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <div className="text-slate-400 text-sm">Call Our Office</div>
-                  <div className="text-xl font-bold">+260 970 000 000</div>
+                  <div className="text-xl font-bold">+260 965 604 023 - +260 963741815</div>
                 </div>
               </div>
 
@@ -49,7 +49,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <div className="text-slate-400 text-sm">Visit Us</div>
-                  <div className="text-xl font-bold">123 Innovative Way, Lusaka, Zambia</div>
+                  <div className="text-xl font-bold">New Chachacha, Kitwe, Zambia</div>
                 </div>
               </div>
             </div>

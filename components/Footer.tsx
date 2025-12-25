@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
               <span className="text-2xl font-extrabold text-white">Lipila</span>
             </div>
             <p className="mb-8 max-w-xs leading-relaxed">
-              Innovative technology solutions for the modern African enterprise. Based in Lusaka, serving the world.
+              Innovative technology solutions for the modern African enterprise. Based in Kitwe, serving the world.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="hover:text-indigo-400 transition-colors"><Twitter size={20} /></a>
