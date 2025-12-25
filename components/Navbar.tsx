@@ -19,7 +19,7 @@ const Navbar: React.FC = () => {
     { name: 'About', href: '#about' },
     { name: 'Careers', href: '#careers' },
     { name: 'Contact', href: '#contact' },
-    { name: 'Admin', href: '#admin', isSpecial: true },
+    // { name: 'Admin', href: '#admin', isSpecial: true },
   ];
 
   return (
