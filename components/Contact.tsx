@@ -1,15 +1,113 @@
 
 import React, { useState } from 'react';
-import { Send, Phone, Mail, MapPin } from 'lucide-react';
+import { Send, Phone, Mail, MapPin, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { db } from '../services/database';
+
+interface FormState {
+  name: string;
+  email: string;
+  message: string;
+}
+
+interface FormErrors {
+  name?: string;
+  email?: string;
+  message?: string;
+}
 
 const Contact: React.FC = () => {
-  const [formState, setFormState] = useState({ name: '', email: '', message: '' });
+  const [formState, setFormState] = useState<FormState>({ name: '', email: '', message: '' });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [submitted, setSubmitted] = useState(false);
+
+  const validate = (field: keyof FormState, value: string): string => {
+    switch (field) {
+      case 'name':
+        if (!value.trim()) return 'Name is required';
+        if (value.trim().length < 2) return 'Name must be at least 2 characters';
+        return '';
+      case 'email':
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!value.trim()) return 'Email is required';
+        if (!emailRegex.test(value)) return 'Please enter a valid email address';
+        return '';
+      case 'message':
+        if (!value.trim()) return 'Message is required';
+        if (value.trim().length < 10) return 'Message must be at least 10 characters';
+        return '';
+      default:
+        return '';
+    }
+  };
+
+  const handleChange = (field: keyof FormState, value: string) => {
+    setFormState(prev => ({ ...prev, [field]: value }));
+    // Immediate validation feedback if field was already touched
+    if (touched[field]) {
+      const error = validate(field, value);
+      setErrors(prev => ({ ...prev, [field]: error }));
+    }
+  };
+
+  const handleBlur = (field: keyof FormState) => {
+    setTouched(prev => ({ ...prev, [field]: true }));
+    const error = validate(field, formState[field]);
+    setErrors(prev => ({ ...prev, [field]: error }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate all fields before submission
+    const newErrors: FormErrors = {};
+    const fields: (keyof FormState)[] = ['name', 'email', 'message'];
+    
+    fields.forEach(field => {
+      const error = validate(field, formState[field]);
+      if (error) newErrors[field] = error;
+    });
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setTouched({ name: true, email: true, message: true });
+      return;
+    }
+
+    // Save to database
+    db.addMessage(formState);
+
     setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 5000);
+    // Reset form after 5 seconds
+    setTimeout(() => {
+      setSubmitted(false);
+      setFormState({ name: '', email: '', message: '' });
+      setTouched({});
+      setErrors({});
+    }, 5000);
+  };
+
+  const renderError = (field: keyof FormState) => {
+    if (touched[field] && errors[field]) {
+      return (
+        <div className="flex items-center mt-1 text-red-500 text-xs font-medium animate-in fade-in slide-in-from-top-1 duration-200">
+          <AlertCircle className="w-3 h-3 mr-1" />
+          {errors[field]}
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const getInputClass = (field: keyof FormState) => {
+    const baseClass = "w-full px-4 py-3 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 transition-all duration-200";
+    if (touched[field] && errors[field]) {
+      return `${baseClass} border-red-300 focus:ring-red-200 bg-red-50/30`;
+    }
+    if (touched[field] && !errors[field] && formState[field]) {
+      return `${baseClass} border-emerald-200 focus:ring-emerald-100 bg-emerald-50/10`;
+    }
+    return `${baseClass} border-slate-200 focus:ring-indigo-500`;
   };
 
   return (
@@ -58,47 +156,69 @@ const Contact: React.FC = () => {
           <div className="flex-1">
             <div className="bg-white p-8 rounded-3xl text-slate-900 shadow-2xl">
               <h3 className="text-2xl font-bold mb-6">Send us a message</h3>
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-5" noValidate>
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1">Full Name</label>
+                  <label htmlFor="name" className="block text-sm font-semibold text-slate-700 mb-1">Full Name</label>
                   <input
+                    id="name"
                     type="text"
                     required
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                    className={getInputClass('name')}
                     placeholder="John Doe"
                     value={formState.name}
-                    onChange={(e) => setFormState({...formState, name: e.target.value})}
+                    onChange={(e) => handleChange('name', e.target.value)}
+                    onBlur={() => handleBlur('name')}
                   />
+                  {renderError('name')}
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1">Email Address</label>
+                  <label htmlFor="email" className="block text-sm font-semibold text-slate-700 mb-1">Email Address</label>
                   <input
+                    id="email"
                     type="email"
                     required
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                    className={getInputClass('email')}
                     placeholder="john@example.com"
                     value={formState.email}
-                    onChange={(e) => setFormState({...formState, email: e.target.value})}
+                    onChange={(e) => handleChange('email', e.target.value)}
+                    onBlur={() => handleBlur('email')}
                   />
+                  {renderError('email')}
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1">How can we help?</label>
+                  <label htmlFor="message" className="block text-sm font-semibold text-slate-700 mb-1">How can we help?</label>
                   <textarea
+                    id="message"
                     required
                     rows={4}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all resize-none"
+                    className={getInputClass('message')}
                     placeholder="Tell us about your project..."
                     value={formState.message}
-                    onChange={(e) => setFormState({...formState, message: e.target.value})}
+                    onChange={(e) => handleChange('message', e.target.value)}
+                    onBlur={() => handleBlur('message')}
                   ></textarea>
+                  {renderError('message')}
                 </div>
                 <button
                   type="submit"
                   disabled={submitted}
-                  className={`w-full py-4 rounded-xl font-bold text-lg flex items-center justify-center transition-all ${submitted ? 'bg-emerald-500 text-white' : 'bg-indigo-600 text-white hover:bg-indigo-700'}`}
+                  className={`w-full py-4 rounded-xl font-bold text-lg flex items-center justify-center transition-all duration-300 transform active:scale-[0.98] ${
+                    submitted 
+                    ? 'bg-emerald-500 text-white cursor-default' 
+                    : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg shadow-indigo-200'
+                  }`}
                 >
-                  {submitted ? 'Message Sent!' : 'Send Message'}
-                  <Send className={`ml-2 w-5 h-5 ${submitted ? 'hidden' : 'block'}`} />
+                  {submitted ? (
+                    <>
+                      <CheckCircle2 className="w-5 h-5 mr-2 animate-in zoom-in duration-300" />
+                      Message Sent!
+                    </>
+                  ) : (
+                    <>
+                      Send Message
+                      <Send className="ml-2 w-5 h-5" />
+                    </>
+                  )}
                 </button>
               </form>
             </div>

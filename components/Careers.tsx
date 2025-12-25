@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { JOBS, CULTURE_POINTS } from '../constants';
 import { Briefcase, MapPin, Clock, Calendar, DollarSign, Terminal, Send, CheckCircle } from 'lucide-react';
 import { ApplicationFormData } from '../types';
+import { db } from '../services/database';
 
 const Careers: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
@@ -28,8 +29,10 @@ const Careers: React.FC = () => {
     e.preventDefault();
     setSubmitting(true);
     
-    // Simulate API call to Postgres backend
-    console.log("Submitting application to database:", formData);
+    // Save application to our simulated database (Pending state)
+    console.log("Saving application to database in pending state...");
+    db.addApplication(formData);
+    
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     setSubmitting(false);

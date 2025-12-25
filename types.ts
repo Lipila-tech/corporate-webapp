@@ -35,3 +35,12 @@ export interface ApplicationFormData {
   githubUrl: string;
   coverLetter: string;
 }
+
+export interface ContactMessage {
+  id: string;
+  name: string;
+  email: string;
+  message: string;
+  dateSent: string;
+  status: 'new' | 'read' | 'archived';
+}

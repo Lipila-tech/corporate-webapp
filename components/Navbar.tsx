@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Lock } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,6 +19,7 @@ const Navbar: React.FC = () => {
     { name: 'About', href: '#about' },
     { name: 'Careers', href: '#careers' },
     { name: 'Contact', href: '#contact' },
+    { name: 'Admin', href: '#admin', isSpecial: true },
   ];
 
   return (
@@ -45,8 +46,13 @@ const Navbar: React.FC = () => {
               <a
                 key={link.name}
                 href={link.href}
-                className="text-slate-600 hover:text-indigo-600 font-medium transition-colors"
+                className={`flex items-center font-medium transition-colors ${
+                  link.isSpecial 
+                  ? 'text-slate-400 hover:text-indigo-600 text-sm' 
+                  : 'text-slate-600 hover:text-indigo-600'
+                }`}
               >
+                {link.isSpecial && <Lock size={14} className="mr-1" />}
                 {link.name}
               </a>
             ))}
@@ -78,8 +84,11 @@ const Navbar: React.FC = () => {
               key={link.name}
               href={link.href}
               onClick={() => setIsOpen(false)}
-              className="text-slate-600 hover:text-indigo-600 font-medium text-lg px-2 py-1"
+              className={`flex items-center font-medium text-lg px-2 py-1 ${
+                link.isSpecial ? 'text-slate-400 border-t border-slate-50 pt-4' : 'text-slate-600 hover:text-indigo-600'
+              }`}
             >
+              {link.isSpecial && <Lock size={18} className="mr-2" />}
               {link.name}
             </a>
           ))}
