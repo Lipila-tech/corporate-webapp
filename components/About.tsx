@@ -8,8 +8,8 @@ const About: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center gap-16">
           <div className="flex-1 grid grid-cols-2 gap-4">
-             <img src="https://picsum.photos/seed/office1/400/600" alt="Office Life" className="rounded-2xl shadow-lg mt-8" />
-             <img src="https://picsum.photos/seed/office2/400/600" alt="Team Work" className="rounded-2xl shadow-lg" />
+             <img src="../assets/images/img1.jpg" alt="Office Life" className="rounded-2xl shadow-lg mt-8" />
+             <img src="../assets/images/img2.jpg" alt="Team Work" className="rounded-2xl shadow-lg" />
           </div>
           
           <div className="flex-1">
@@ -38,7 +38,7 @@ const About: React.FC = () => {
             </ul>
 
             <div className="mt-10 p-6 bg-indigo-600 rounded-2xl text-white">
-              <div className="text-3xl font-bold mb-1">50+</div>
+              <div className="text-3xl font-bold mb-1">3</div>
               <div className="text-indigo-100 text-sm">Active Enterprises Served</div>
             </div>
           </div>

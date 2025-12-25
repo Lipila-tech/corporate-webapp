@@ -44,7 +44,7 @@ const AIAssistant: React.FC = () => {
               <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
                 <MessageCircle size={18} />
               </div>
-              <span className="font-bold">Lipila Assistant</span>
+              <span className="font-bold">L-Tech Assistant</span>
             </div>
             <button onClick={() => setIsOpen(false)} className="hover:bg-white/10 p-1 rounded-lg">
               <X size={20} />

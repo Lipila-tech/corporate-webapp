@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Layout, CreditCard, Code, GraduationCap, ShoppingBag, Building2, Briefcase, Rocket, Heart, TrendingUp, Users } from 'lucide-react';
+import { Layout, CreditCard, Code, GraduationCap, ShoppingBag, Building2, Briefcase,Guitar, Rocket, Heart, TrendingUp, Users } from 'lucide-react';
 import { Service, JobPosition } from './types';
 
 export const SERVICES: Service[] = [
@@ -39,8 +39,9 @@ export const TAGLINES = [
 ];
 
 export const INDUSTRIES = [
-  { name: 'Finance', icon: <Building2 className="w-5 h-5" /> },
   { name: 'Education', icon: <GraduationCap className="w-5 h-5" /> },
+  { name: 'Finance', icon: <Building2 className="w-5 h-5" /> },
+  { name: 'Entertainment', icon: <Guitar className="w-5 h-5" /> },
   { name: 'Retail', icon: <ShoppingBag className="w-5 h-5" /> },
   { name: 'Enterprise', icon: <Briefcase className="w-5 h-5" /> },
 ];
@@ -52,10 +53,10 @@ export const JOBS: JobPosition[] = [
     department: 'Engineering',
     location: 'Hybrid (Remote + Kitwe)',
     type: 'Part-time (Paid)',
-    commitment: '6–8 hours per week',
+    commitment: '8–18 hours per week',
     startDate: 'January 2026',
     compensation: 'K50 – K150 per hour',
-    technologies: ['Python/Django', 'React/React Native', 'Node.js', 'TypeScript', 'PostgreSQL'],
+    technologies: ['Python/Django', 'React/React Native', 'Node.js', 'HTML/CSS/JavaScript', 'TypeScript', 'PostgreSQL', 'Cloud(AWS(EC2,S3), Google Cloud)'],
     requirements: [
       'Ability to commit 6–8 hrs/week',
       'Willingness to learn and take feedback',
@@ -75,7 +76,7 @@ export const JOBS: JobPosition[] = [
     type: 'Part-time (Paid)',
     commitment: '6–8 hours per week',
     startDate: 'January 2026',
-    compensation: 'Hourly (Discussed in interview)',
+    compensation: 'K50 – K150 per hour',
     requirements: [
       'Proficiency in Spreadsheets (Google Sheets / Excel)',
       'Strong communication skills',
@@ -135,5 +136,6 @@ export const ICON_MAP: Record<string, React.ReactNode> = {
   ShoppingBag: <ShoppingBag className="w-6 h-6" />,
   Building2: <Building2 className="w-6 h-6" />,
   Briefcase: <Briefcase className="w-6 h-6" />,
+  Guitar: <Guitar className="w-6 h-6" />,
   Rocket: <Rocket className="w-6 h-6" />
 };

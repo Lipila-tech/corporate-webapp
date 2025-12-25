@@ -34,7 +34,7 @@ const Hero: React.FC = () => {
               <Sparkles className="w-4 h-4 mr-2" />
               Empowering African Enterprises
             </div>
-            <h1 className="text-5xl lg:text-7xl font-extrabold text-slate-900 leading-tight mb-6 h-[180px] lg:h-[260px] flex flex-col justify-center">
+            <h1 className="text-5md lg:text-6xl font-extrabold text-slate-900 leading-tight mb-6 h-[180px] lg:h-[260px] flex flex-col justify-center">
               Modern Solutions for <br />
               <span 
                 className={`inline-block text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-emerald-500 transition-all duration-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
@@ -64,9 +64,9 @@ const Hero: React.FC = () => {
             <div className="mt-12 flex items-center justify-center lg:justify-start space-x-6 text-slate-400">
               <span className="text-sm font-medium">TRUSTED BY TEAMS AT:</span>
               <div className="flex space-x-4 grayscale opacity-60">
-                <span className="font-bold text-xl">FINTECH+</span>
-                <span className="font-bold text-xl">EDULINK</span>
-                <span className="font-bold text-xl">RETAIL360</span>
+                <span className="font-bold text-xl">GOA Veterinary Consultants</span>
+                <span className="font-bold text-xl">VetICare</span>
+                <span className="font-bold text-xl">SchAdmin</span>
               </div>
             </div>
           </div>
@@ -74,7 +74,7 @@ const Hero: React.FC = () => {
           <div className="flex-1 relative">
             <div className="relative z-10 w-full aspect-square max-w-md mx-auto">
               <img
-                src="https://picsum.photos/seed/tech1/800/800"
+                src="../assets/images/banner.png"
                 alt="Technology Illustration"
                 className="rounded-3xl shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500"
               />
