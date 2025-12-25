@@ -7,7 +7,7 @@ import { Message } from '../types';
 const AIAssistant: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'model', text: 'Hello! I am the Lipila AI Assistant. How can I help you today?' }
+    { role: 'model', text: 'Hello! I am the L-Tech AI Assistant. How can I help you today?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
