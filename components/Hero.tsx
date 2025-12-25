@@ -74,7 +74,7 @@ const Hero: React.FC = () => {
           <div className="flex-1 relative">
             <div className="relative z-10 w-full aspect-square max-w-md mx-auto">
               <img
-                src="../assets/images/banner.png"
+                src={"/images/banner.png"}
                 alt="Technology Illustration"
                 className="rounded-3xl shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500"
               />
