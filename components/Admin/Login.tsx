@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Lock, Mail, ArrowRight } from 'lucide-react';
-import { db } from '../../services/database';
+import { db } from '../../services/api';
 
 interface LoginProps {
   onLogin: () => void;
@@ -12,15 +12,15 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    const user = db.authenticate(email, password);
-    if (user) {
-      onLogin();
-    } else {
-      setError('Invalid email or password.');
-    }
-  };
+  const handleLogin = async (e: React.FormEvent) => {
+      e.preventDefault();
+      try {
+        await db.login(email, password); // This hits the Django /api/token/ endpoint
+        onLogin(); // Tells App.tsx that we are now logged in
+      } catch (err) {
+        alert("Invalid Credentials");
+      }
+    };
 
   return (
     <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
@@ -39,10 +39,10 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             <div className="relative">
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
               <input
-                type="email"
+                type="text"
                 required
                 className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
-                placeholder="email@lipila.co.zm"
+                placeholder="admin"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />

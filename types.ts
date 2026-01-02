@@ -44,3 +44,5 @@ export interface ContactMessage {
   dateSent: string;
   status: 'new' | 'read' | 'archived';
 }
+
+export type UserRole = 'admin' | 'viewer';

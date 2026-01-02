@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -10,16 +9,24 @@ import Footer from './components/Footer';
 import AIAssistant from './components/AIAssistant';
 import Login from './components/Admin/Login';
 import Dashboard from './components/Admin/Dashboard';
-import { db } from './services/database';
+// Pointing to your new API service
+import { db } from './services/api'; 
 
 const App: React.FC = () => {
   const [view, setView] = useState<'public' | 'admin'>('public');
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
 
+  // Helper to check if a token exists in storage
+  const checkAuthStatus = () => {
+    const token = localStorage.getItem('access_token');
+    setIsAdminLoggedIn(!!token);
+  };
+
   useEffect(() => {
-    setIsAdminLoggedIn(db.isAdminLoggedIn());
+    // Initial check on mount
+    checkAuthStatus();
     
-    // Check hash for simple routing
+    // Listen for hash changes for routing
     const handleHashChange = () => {
       if (window.location.hash === '#admin') {
         setView('admin');
@@ -30,20 +37,27 @@ const App: React.FC = () => {
 
     window.addEventListener('hashchange', handleHashChange);
     handleHashChange();
+    
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
+  // Handle Logout
+  const handleLogout = () => {
+    db.logout(); // Clears tokens from localStorage
+    setIsAdminLoggedIn(false);
+    window.location.hash = ''; // Redirect to public view
+  };
+
+  // 1. Admin View Logic
   if (view === 'admin') {
     if (!isAdminLoggedIn) {
-      return <Login onLogin={() => setIsAdminLoggedIn(true)} />;
+      // Pass checkAuthStatus so Login can trigger a state update after API success
+      return <Login onLogin={checkAuthStatus} />;
     }
-    return <Dashboard onLogout={() => {
-      db.logout();
-      setIsAdminLoggedIn(false);
-      window.location.hash = '';
-    }} />;
+    return <Dashboard onLogout={handleLogout} />;
   }
 
+  // 2. Public View Logic
   return (
     <div className="min-h-screen">
       <Navbar />

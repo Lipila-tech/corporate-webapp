@@ -5,8 +5,8 @@ import {
   LogOut, CheckCircle, XCircle, Clock, Trash2, Plus,
   MessageSquare, Mail, User, Calendar, Shield, ShieldAlert
 } from 'lucide-react';
-import { db, Application, Employee, Customer, UserRole } from '../../services/database';
-import { ContactMessage } from '../../types';
+import { db } from '../../services/api';
+import { ContactMessage, Application, Employee, Customer, UserRole } from '../../types';
 
 interface DashboardProps {
   onLogout: () => void;
@@ -28,17 +28,29 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
     name: '', 
     email: '', 
     role: '', 
-    password: 'password123', 
-    systemRole: 'viewer' as UserRole 
+    password: '', 
+    systemRole: '' as UserRole 
   });
   const [newCustomer, setNewCustomer] = useState({ name: '', company: '', email: '', status: 'lead' as const });
 
-  useEffect(() => {
-    const user = db.getCurrentUser();
-    setCurrentUser(user);
-    refreshData();
-  }, []);
+useEffect(() => {
+  const initializeDashboard = async () => {
+    try {
+      // 1. Fetch the user details from the API
+      const user = await db.getCurrentUser();
+      setCurrentUser(user);
+      
+      // 2. Refresh your other data (Applications, Customers, etc.)
+      await refreshData(); 
+    } catch (error) {
+      console.error("Failed to load dashboard data", error);
+      // Optional: If 401, trigger logout
+      // onLogout();
+    }
+  };
 
+  initializeDashboard();
+}, []);
   const isAdmin = currentUser?.systemRole === 'admin';
 
   const refreshData = () => {

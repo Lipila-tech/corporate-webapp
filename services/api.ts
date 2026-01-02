@@ -8,7 +8,33 @@ const api = axios.create({
   baseURL: API_URL,
 });
 
+// Interceptor to add the JWT token to every request
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('access_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 export const db = {
+  login: async (email: string, password: string) => {
+    // DRF SimpleJWT expects 'username' by default. 
+    // You may need to pass email as the username.
+    const res = await api.post('/token/', { username: email, password });
+    localStorage.setItem('access_token', res.data.access);
+    localStorage.setItem('refresh_token', res.data.refresh);
+    return res.data;
+  },
+
+  getCurrentUser: async (): Promise<Employee> => {
+    const res = await api.get('/me/');
+    return res.data;
+  },
+
+  // Helper to check if we have a token at all (synchronous)
+  hasToken: () => !!localStorage.getItem('access_token'),
+
   // Applications
   getApplications: async (): Promise<Application[]> => {
     const res = await api.get('/applications/');
@@ -45,14 +71,8 @@ export const db = {
     return res.data;
   },
 
-  // Auth (Simplified for now - typically use JWT)
-  authenticate: async (email: string, password: string) => {
-    const res = await api.post('/login/', { email, password });
-    localStorage.setItem('token', res.data.token);
-    return res.data.user;
-  },
-
   logout: () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
   }
 };
