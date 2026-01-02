@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { JOBS, CULTURE_POINTS } from '../constants';
 import { Briefcase, MapPin, Clock, Calendar, DollarSign, Terminal, Send, CheckCircle } from 'lucide-react';

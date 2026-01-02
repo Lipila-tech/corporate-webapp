@@ -1,4 +1,4 @@
-
+// database.ts
 import { ApplicationFormData, ContactMessage } from '../types';
 
 export type UserRole = 'admin' | 'viewer';
