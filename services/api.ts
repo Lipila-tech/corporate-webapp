@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { ApplicationFormData, ContactMessage, Application, Employee, Customer } from '../types';
 
-const API_URL = 'http://localhost:8000/api';
+const API_URL = 'https://lipilaapi.pythonanywhere.com/api';
 
 // Create an instance for global config (like Auth tokens later)
 const api = axios.create({
@@ -11,9 +11,12 @@ const api = axios.create({
 // Interceptor to add the JWT token to every request
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('access_token');
+  
+  // Only add the header if we actually have a token
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+  
   return config;
 });
 
@@ -46,6 +49,11 @@ export const db = {
     return res.data;
   },
 
+  addEmployee: async (empData: EmployeeFormData): Promise<Employee> => {
+    const res = await api.post('/employees/', empData);
+    return res.data;
+  },
+
   updateApplicationStatus: async (id: string, status: string) => {
     await api.patch(`/applications/${id}/`, { status });
   },
@@ -64,6 +72,11 @@ export const db = {
   getCustomers: async (): Promise<Customer[]> => {
     const res = await api.get('/customers/');
     return res.data;
+  },
+  getMessages: async (): Promise<Message[]> => {
+    const res = await api.get('/messages/');
+    return res.data;
+
   },
 
   addCustomer: async (customer: Omit<Customer, 'id'>) => {

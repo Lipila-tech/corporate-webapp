@@ -27,6 +27,11 @@ export interface Message {
   text: string;
 }
 
+export interface Employee {
+  role: 'user' | 'model';
+  text: string;
+}
+
 export interface ApplicationFormData {
   fullName: string;
   email: string;
@@ -34,6 +39,12 @@ export interface ApplicationFormData {
   portfolioUrl: string;
   githubUrl: string;
   coverLetter: string;
+}
+
+export interface EmployeeData {
+  email: string;
+  role: string;
+  system_role: string;
 }
 
 export interface ContactMessage {
@@ -44,5 +55,3 @@ export interface ContactMessage {
   dateSent: string;
   status: 'new' | 'read' | 'archived';
 }
-
-export type UserRole = 'admin' | 'viewer';

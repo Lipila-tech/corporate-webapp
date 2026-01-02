@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { JOBS, CULTURE_POINTS } from '../constants';
 import { Briefcase, MapPin, Clock, Calendar, DollarSign, Terminal, Send, CheckCircle } from 'lucide-react';
 import { ApplicationFormData } from '../types';
-import { db } from '../services/database';
+import { db } from '../services/api';
 
 const Careers: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
@@ -25,16 +25,13 @@ const Careers: React.FC = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
+  e.preventDefault();
+  setSubmitting(true);
+  
+  try {
+    await db.addApplication(formData);
     
-    // Save application to our simulated database (Pending state)
-    console.log("Saving application to database in pending state...");
-    db.addApplication(formData);
-    
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setSubmitting(false);
+    // 2. Success state updates
     setApplied(true);
     setFormData({
       fullName: '',
@@ -45,7 +42,15 @@ const Careers: React.FC = () => {
       coverLetter: ''
     });
     setSelectedJob(null);
-  };
+  } catch (error) {
+    // 3. Error handling
+    console.error("Application submission failed:", error);
+    alert("There was an error submitting your application. Please try again.");
+  } finally {
+    // 4. Always stop the loading spinner
+    setSubmitting(false);
+  }
+};
 
   return (
     <section id="careers" className="py-24 bg-slate-50 relative">

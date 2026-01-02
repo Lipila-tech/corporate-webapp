@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Send, Phone, Mail, MapPin, AlertCircle, CheckCircle2 } from 'lucide-react';
-import { db } from '../services/database';
+import { db } from '../services/api';
 
 interface FormState {
   name: string;

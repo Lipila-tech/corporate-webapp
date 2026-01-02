@@ -25,11 +25,10 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
   const [showAddEmployee, setShowAddEmployee] = useState(false);
   const [showAddCustomer, setShowAddCustomer] = useState(false);
   const [newEmployee, setNewEmployee] = useState({ 
-    name: '', 
     email: '', 
     role: '', 
     password: '', 
-    systemRole: '' as UserRole 
+    systemRole: ''
   });
   const [newCustomer, setNewCustomer] = useState({ name: '', company: '', email: '', status: 'lead' as const });
 
@@ -51,14 +50,27 @@ useEffect(() => {
 
   initializeDashboard();
 }, []);
-  const isAdmin = currentUser?.systemRole === 'admin';
+  const isAdmin = currentUser?.system_role === 'admin';
 
-  const refreshData = () => {
-    setApplications(db.getApplications());
-    setEmployees(db.getEmployees());
-    setCustomers(db.getCustomers());
-    setMessages(db.getMessages());
-  };
+  const refreshData = async () => {
+    try {
+      // We run these in parallel using Promise.all for better performance
+      const [apps, emps, custs, msgs] = await Promise.all([
+        db.getApplications(),
+        db.getEmployees(),
+        db.getCustomers(),
+        db.getMessages()
+      ]);
+
+      setApplications(apps);
+      setEmployees(emps);
+      setCustomers(custs);
+      setMessages(msgs);
+    } catch (error) {
+      console.error("Error refreshing data:", error);
+      // Optional: Add a notification or error state here
+    }
+};
 
   const handleUpdateApplicationStatus = (id: string, status: Application['status']) => {
     if (!isAdmin) return alert('Restricted: Admin role required for this action.');
@@ -101,7 +113,7 @@ useEffect(() => {
     e.preventDefault();
     if (!isAdmin) return;
     db.addEmployee(newEmployee);
-    setNewEmployee({ name: '', email: '', role: '', password: 'password123', systemRole: 'viewer' });
+    setNewEmployee({ email: '', role: '', system_role: '' });
     setShowAddEmployee(false);
     refreshData();
   };
@@ -117,14 +129,34 @@ useEffect(() => {
 
   const filteredData = () => {
     const term = searchTerm.toLowerCase();
+
     switch(activeTab) {
-      case 'applications': return applications.filter(a => a.fullName.toLowerCase().includes(term) || a.email.toLowerCase().includes(term));
-      case 'employees': return employees.filter(e => e.name.toLowerCase().includes(term) || e.role.toLowerCase().includes(term));
-      case 'customers': return customers.filter(c => c.name.toLowerCase().includes(term) || c.company.toLowerCase().includes(term));
-      case 'messages': return messages.filter(m => m.name.toLowerCase().includes(term) || m.message.toLowerCase().includes(term));
-      default: return [];
+      case 'applications':
+        // Standard built-in type guard: Array.isArray()
+        return Array.isArray(applications) 
+          ? applications.filter(a => a.fullName.toLowerCase().includes(term) || a.email.toLowerCase().includes(term))
+          : [];
+
+      case 'employees':
+        return Array.isArray(employees)
+          ? employees.filter(e => e.system_role.toLowerCase().includes(term) || e.email.toLowerCase().includes(term))
+          : [];
+
+      case 'customers':
+        return Array.isArray(customers)
+          ? customers.filter(c => c.name.toLowerCase().includes(term) || c.company.toLowerCase().includes(term))
+          : [];
+
+      case 'messages':
+        return Array.isArray(messages)
+          ? messages.filter(m => m.name.toLowerCase().includes(term) || m.message.toLowerCase().includes(term))
+          : [];
+
+      default:
+        return [];
     }
-  };
+};
+
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
@@ -158,13 +190,13 @@ useEffect(() => {
         <div className="mb-6 px-2 py-4 border-t border-slate-800">
           <div className="flex items-center space-x-3 mb-4">
             <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs">
-              {currentUser?.name.charAt(0)}
+              {currentUser?.email.charAt(0)}
             </div>
             <div className="overflow-hidden">
-              <p className="text-xs font-bold text-white truncate">{currentUser?.name}</p>
+              <p className="text-xs font-bold text-white truncate">{currentUser?.role}</p>
               <div className="flex items-center text-[10px] text-slate-400">
-                {currentUser?.systemRole === 'admin' ? <Shield size={10} className="mr-1 text-emerald-400" /> : <Shield size={10} className="mr-1 text-amber-400" />}
-                <span className="capitalize">{currentUser?.systemRole}</span>
+                {isAdmin ? <Shield size={10} className="mr-1 text-emerald-400" /> : <Shield size={10} className="mr-1 text-amber-400" />}
+                <span className="capitalize">{currentUser?.system_role}</span>
               </div>
             </div>
           </div>
@@ -241,7 +273,11 @@ useEffect(() => {
                 <Clock size={20} />
               </div>
             </div>
-            <div className="text-3xl font-bold text-slate-900">{applications.filter(a => a.status === 'pending').length}</div>
+            <div className="text-3xl font-bold text-slate-900">
+            {Array.isArray(applications) 
+              ? applications.filter(a => a.status === 'pending').length 
+              : 0}
+          </div>
           </div>
           <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
             <div className="flex items-center justify-between mb-2">
@@ -268,7 +304,11 @@ useEffect(() => {
                 <MessageSquare size={20} />
               </div>
             </div>
-            <div className="text-3xl font-bold text-slate-900">{messages.filter(m => m.status === 'new').length}</div>
+            <div className="text-3xl font-bold text-slate-900">
+              {Array.isArray(messages) 
+                ? messages.filter(m => m.status === 'new').length 
+                : 0}
+            </div>
           </div>
         </div>
 
@@ -348,7 +388,11 @@ useEffect(() => {
                     <td className="px-6 py-6 text-sm text-slate-600">
                       <div>{app.email}</div>
                       {app.portfolioUrl && (
-                        <a href={app.portfolioUrl} target="_blank" className="text-indigo-600 text-xs hover:underline">Portfolio Link</a>
+                        <div>
+                          <a href={app.portfolioUrl} target="_blank" className="text-indigo-600 text-xs hover:underline">Portfolio/CV Link</a>
+                           | 
+                          <a href={app.githubUrl} target="_blank" className="text-indigo-600 text-xs hover:underline">Github/LinkedIn Link</a>
+                        </div>
                       )}
                     </td>
                     <td className="px-6 py-6">
@@ -385,18 +429,18 @@ useEffect(() => {
                   <tr key={emp.id} className="hover:bg-slate-50 transition-colors">
                     <td className="px-6 py-6">
                       <div className="flex items-center space-x-2">
-                        <div className="font-bold text-slate-900">{emp.name}</div>
-                        {emp.systemRole === 'admin' ? <Shield size={12} className="text-emerald-500" /> : <Shield size={12} className="text-amber-500" />}
+                        <div className="font-bold text-slate-900">{emp.role}</div>
+                        {emp.system_role === 'admin' ? <Shield size={12} className="text-emerald-500" /> : <Shield size={12} className="text-amber-500" />}
                       </div>
-                      <div className="text-xs text-slate-500 uppercase tracking-tight">{emp.role}</div>
+                      <div className="text-xs text-slate-500 uppercase tracking-tight">{emp.system_role}</div>
                     </td>
                     <td className="px-6 py-6 text-sm text-slate-600">{emp.email}</td>
                     <td className="px-6 py-6">
-                      <div className="text-sm font-medium text-slate-600 capitalize">{emp.systemRole}</div>
-                      <div className="text-xs text-slate-400">{new Date(emp.dateAdded).toLocaleDateString()}</div>
+                      <div className="text-sm font-medium text-slate-600 capitalize">{emp.role}</div>
+                      <div className="text-xs text-slate-400">{new Date(emp.date_added).toLocaleDateString()}</div>
                     </td>
                     <td className="px-6 py-6 text-right">
-                      {isAdmin && emp.id !== currentUser?.id && (
+                      {currentUser?.system_role ==='admin' && emp.id !== currentUser?.id && (
                         <button onClick={() => handleDeleteEmployee(emp.id)} className="p-2 text-slate-400 hover:text-red-600 transition-colors"><Trash2 size={18} /></button>
                       )}
                     </td>
@@ -418,7 +462,7 @@ useEffect(() => {
                       </span>
                     </td>
                     <td className="px-6 py-6 text-right">
-                      {isAdmin && (
+                      {currentUser?.system_role ==='admin' && (
                         <button onClick={() => handleDeleteCustomer(cust.id)} className="p-2 text-slate-400 hover:text-red-600 transition-colors"><Trash2 size={18} /></button>
                       )}
                     </td>
@@ -445,14 +489,14 @@ useEffect(() => {
           <div className="bg-white rounded-[2rem] w-full max-w-md p-8 animate-in zoom-in duration-300 shadow-2xl">
             <h3 className="text-2xl font-bold mb-6">New Employee</h3>
             <form onSubmit={handleAddEmployee} className="space-y-4">
-              <div>
+            {/*<div>
                 <label className="text-xs font-bold text-slate-400 uppercase mb-1 block">Full Name</label>
                 <input 
                   type="text" placeholder="Mwansa Zulu" required 
                   className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl"
                   value={newEmployee.name} onChange={e => setNewEmployee({...newEmployee, name: e.target.value})}
                 />
-              </div>
+              </div>*/}
               <div>
                 <label className="text-xs font-bold text-slate-400 uppercase mb-1 block">Work Email</label>
                 <input 
@@ -462,7 +506,7 @@ useEffect(() => {
                 />
               </div>
               <div>
-                <label className="text-xs font-bold text-slate-400 uppercase mb-1 block">Job Title</label>
+                <label className="text-xs font-bold text-slate-400 uppercase mb-1 block">Job Title/Role</label>
                 <input 
                   type="text" placeholder="Software Engineer" required 
                   className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl"
@@ -473,8 +517,8 @@ useEffect(() => {
                 <label className="text-xs font-bold text-slate-400 uppercase mb-1 block">System Access Role</label>
                 <select 
                   className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl"
-                  value={newEmployee.systemRole} 
-                  onChange={e => setNewEmployee({...newEmployee, systemRole: e.target.value as UserRole})}
+                  value={newEmployee.system_role}
+                  onChange={e => setNewEmployee({...newEmployee, system_role: e.target.value as UserRole})}
                 >
                   <option value="viewer">Viewer (Read-Only)</option>
                   <option value="admin">Administrator (Full Access)</option>
