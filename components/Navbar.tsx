@@ -1,11 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Lock } from 'lucide-react';
+import GoogleImage from './GoogleImage'
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
+  const logoUrl = "https://drive.google.com/file/d/1XydaHBNtrkzIfea5Bt9sADs87lL7Ef72/view?usp=drive_link";
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -29,10 +30,7 @@ const Navbar: React.FC = () => {
           <div className="flex items-center">
             <a href="#" className="flex items-center space-x-2">
               <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center">
-                <img
-                src="/images/logo.png"
-                alt="Logo"
-              />
+               {logoUrl && <GoogleImage driveUrl={logoUrl} alt="logo" />}
               </div>
               <span className={`text-2xl font-extrabold tracking-tight ${scrolled ? 'text-slate-900' : 'text-slate-900'}`}>
                 Tech

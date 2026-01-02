@@ -1,15 +1,19 @@
 
 import React from 'react';
+import GoogleImage from './GoogleImage'
 import { CheckCircle2 } from 'lucide-react';
 
 const About: React.FC = () => {
+  const img1Url = "https://drive.google.com/file/d/1GgZsG7fvRT-go_d_0Ppg3cAPNOutCMZG/view?usp=drive_link";
+  const img2Url = "https://drive.google.com/file/d/1YLCm-201x279qgGyiAYfMeyEyU7tooB3/view?usp=drive_link";
+
   return (
     <section id="about" className="py-24 bg-slate-50 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center gap-16">
           <div className="flex-1 grid grid-cols-2 gap-4">
-             <img src="/images/img1.jpg" alt="Office Life" className="rounded-2xl shadow-lg mt-8" />
-             <img src="/images/img2.jpg" alt="Team Work" className="rounded-2xl shadow-lg" />
+            {img2Url && <GoogleImage driveUrl={img2Url} alt="Tean work image" className="rounded-2xl shadow-lg mt-8"/>}
+            {img1Url && <GoogleImage driveUrl={img1Url} alt="Simple Office Life" className="rounded-2xl shadow-lg"/>}
           </div>
           
           <div className="flex-1">

@@ -2,10 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { TAGLINES } from '../constants';
+import GoogleImage from './GoogleImage'
 
 const Hero: React.FC = () => {
   const [taglineIndex, setTaglineIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
+  const bannerUrl = "https://drive.google.com/file/d/18qDDZjO2DVVQoIYKTexjRsPE8njH_hV4/view?usp=drive_link";
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -77,15 +79,7 @@ const Hero: React.FC = () => {
           <div className="flex-1 w-full lg:w-auto relative px-4 sm:px-0 mt-8 lg:mt-0">
             <div className="relative z-10 w-full max-w-xl mx-auto lg:max-w-none">
               <div className="relative group overflow-hidden rounded-[2.5rem] shadow-2xl bg-white p-2">
-                 <img
-                  src="/images/banner.png"
-                  alt="Lipila Technologies Platform Preview"
-                  className="rounded-[2rem] w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = "https://picsum.photos/seed/lipilatech/1200/800";
-                  }}
-                />
+               {bannerUrl && <GoogleImage driveUrl={bannerUrl} alt="L-tech Banner" className="rounded-[2rem] w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105"/>}
               </div>
               
               {/* Floating Badge */}
