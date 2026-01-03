@@ -5,38 +5,53 @@ import { Service, JobPosition } from './types';
 
 export const SERVICES: Service[] = [
   {
-    id: 'saas',
-    title: 'SaaS Platforms',
-    description: 'Cloud-native software designed to scale your operations effortlessly. We build modular solutions for education, HR, and business operations.',
-    icon: 'Layout',
-    category: 'SaaS',
-    benefits: ['Scalability on demand', 'Reduced operational costs', 'Real-time data synchronization']
-  },
+  id: 'custom',
+  title: 'Custom Software',
+  description: 'When off-the-shelf software can’t solve your problem, we design and build systems tailored specifically to how your business works.',
+  icon: 'Code',
+  category: 'Enterprise',
+  benefits: [
+    'Software built exactly for your workflow',
+    'You fully own the system and data',
+    'Easy integration with existing tools'
+  ]
+},
   {
-    id: 'payments',
-    title: 'Payment Systems',
-    description: 'Secure, high-performance payment gateways and mobile money integrations tailored for the Zambian market.',
-    icon: 'CreditCard',
-    category: 'Payments',
-    benefits: ['Mobile Money (MTN/Airtel/Zamtel) integration', 'PCI-DSS compliance', 'Fraud detection']
-  },
-  {
-    id: 'custom',
-    title: 'Custom Software',
-    description: 'Bespoke development services solving unique enterprise challenges. From legacy migration to AI-driven automation.',
-    icon: 'Code',
-    category: 'Enterprise',
-    benefits: ['Full ownership of code', 'Perfect fit for your workflow', 'Seamless integration']
-  }
+  id: 'saas',
+  title: 'SaaS Platforms',
+  description: 'We build cloud-based software you can access anytime, anywhere. Our SaaS platforms help businesses manage education, HR, finance, and operations without complicated setups.',
+  icon: 'Layout',
+  category: 'SaaS',
+  benefits: [
+    'Grow users without changing systems',
+    'Lower IT and maintenance costs',
+    'Access real-time data from anywhere'
+  ]
+},
+{
+  id: 'payments',
+  title: 'Payment Systems',
+  description: 'We build secure payment systems that allow businesses to collect and send money reliably using mobile money and digital channels.',
+  icon: 'CreditCard',
+  category: 'Payments',
+  benefits: [
+    'MTN, Airtel, and Zamtel mobile money support',
+    'Secure and compliant transactions',
+    'Reduced payment failures and fraud risk'
+  ]
+}
+
+
 ];
 
 export const TAGLINES = [
-  "Zambia's Digital Economy.",
-  "The Future of SaaS Platforms.",
-  "Seamless Payment Systems.",
-  "Bespoke Enterprise Software.",
-  "Innovation in Education."
+  "Building Zambia’s Digital Future.",
+  "Software That Grows With Your Business.",
+  "Payments That Just Work.",
+  "Custom Systems, Built for You.",
+  "Technology That Empowers Education."
 ];
+
 
 export const INDUSTRIES = [
   { name: 'Education', icon: <GraduationCap className="w-5 h-5" /> },

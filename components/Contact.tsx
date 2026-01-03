@@ -161,7 +161,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <div className="text-slate-400 text-sm">Visit Us</div>
-                  <div className="text-xl font-bold">New Chachacha, Kitwe, Zambia</div>
+                  <div className="text-xl font-bold">Kitwe, Zambia</div>
                 </div>
               </div>
             </div>

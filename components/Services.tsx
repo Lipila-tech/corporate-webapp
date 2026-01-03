@@ -10,11 +10,13 @@ const Services: React.FC = () => {
         <div className="text-center mb-20">
           <h2 className="text-indigo-600 font-bold tracking-wider uppercase text-sm mb-3">What We Do</h2>
           <p className="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-6">
-            Building the Infrastructure for <br className="hidden lg:block" /> Digital Prosperity.
+            Technology That Solves Real Business Problems
           </p>
+
           <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-            Lipila Technologies provides the digital engines that power modern businesses across Africa's most vital sectors.
+            We design and build the systems behind modern businesses — helping you save time, reduce costs, and serve your customers better.
           </p>
+
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">

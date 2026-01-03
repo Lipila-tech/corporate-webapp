@@ -47,8 +47,10 @@ const Hero: React.FC = () => {
             </h1>
 
             <p className="text-lg sm:text-xl text-slate-600 mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium">
-              Lipila Technologies builds scalable SaaS platforms, high-performance payment systems, and bespoke software solutions that drive growth for finance, retail, and education.
+              Running a business today is hard when systems don’t talk to each other, payments fail, or software doesn’t fit your needs. 
+              Lipila Technologies helps businesses grow by building reliable SaaS platforms, secure payment systems, and custom software that simply works.
             </p>
+
 
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-6">
               <a

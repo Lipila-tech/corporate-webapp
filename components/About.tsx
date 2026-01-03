@@ -18,12 +18,15 @@ const About: React.FC = () => {
           
           <div className="flex-1">
             <h2 className="text-indigo-600 font-bold tracking-wider uppercase text-sm mb-3">About Lipila</h2>
-            <p className="text-4xl font-extrabold text-slate-900 mb-8 leading-tight">
-              Driving Digital Transformation from the heart of Zambia.
-            </p>
             <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-              Founded with the vision to bridge the technological gap in Southern Africa, Lipila Technologies Limited has grown from a small consultancy to a multi-product tech house. We pride ourselves on local knowledge combined with global engineering standards.
+              Lipila Technologies Limited was founded to solve a simple problem: many African businesses are forced to use software that was never designed for their realities.
+              What started as a small consultancy has grown into a multi-product technology company building practical, reliable systems for real-world use.
             </p>
+
+            <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+              We combine deep local understanding with global engineering standards to deliver solutions that are secure, scalable, and easy to use — whether you’re a growing startup or an established enterprise.
+            </p>
+
             
             <ul className="space-y-4">
               {[
@@ -41,10 +44,10 @@ const About: React.FC = () => {
               ))}
             </ul>
 
-            <div className="mt-10 p-6 bg-indigo-600 rounded-2xl text-white">
+           {/* <div className="mt-10 p-6 bg-indigo-600 rounded-2xl text-white">
               <div className="text-3xl font-bold mb-1">3</div>
               <div className="text-indigo-100 text-sm">Active Enterprises Served</div>
-            </div>
+            </div>*/}
           </div>
         </div>
       </div>
