@@ -222,7 +222,7 @@ const Careers: React.FC = () => {
                   onChange={(e) => setFormData({...formData, roleId: e.target.value})}
                 >
                   <option value="" disabled>Select a position</option>
-                  {JOBS.map(j => <option key={j.id} value={j.id}>{j.title}</option>)}
+                  {jobs.map(j => <option key={j.id} value={j.id}>{j.title}</option>)}
                 </select>
               </div>
 
