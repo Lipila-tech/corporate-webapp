@@ -128,20 +128,21 @@ export const JOBS: JobPosition[] = [
 export const CULTURE_POINTS = [
   {
     title: 'Growth-Oriented',
-    desc: 'We invest in our people. Whether you have a degree or are self-taught, we value skill and dedication.',
+    desc: 'We believe learning never stops. From self-taught developers to seasoned professionals, we value curiosity, discipline, and continuous improvement.',
     icon: <TrendingUp className="w-6 h-6 text-indigo-600" />
   },
   {
-    title: 'Inclusive & Passionate',
-    desc: 'Join a team of dreamers and builders who are passionate about the Zambian tech ecosystem.',
+    title: 'Inclusive & Purpose-Driven',
+    desc: 'We’re building technology for Africa, by people who care deeply about local impact and long-term change.',
     icon: <Heart className="w-6 h-6 text-indigo-600" />
   },
   {
-    title: 'Impact Driven',
-    desc: 'Every line of code you write helps a local business scale or a student access better education tools.',
+    title: 'Impact That Matters',
+    desc: 'Your work contributes to real outcomes — helping businesses operate better, move money securely, and expand access to digital tools.',
     icon: <Users className="w-6 h-6 text-indigo-600" />
   }
 ];
+
 
 export const ICON_MAP: Record<string, React.ReactNode> = {
   Layout: <Layout className="w-6 h-6" />,

@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { ApplicationFormData, ContactMessage, Application, Employee, Customer } from '../types';
+import { ApplicationFormData, ContactMessage, Application, Employee, Customer, JobPosition } from '../types';
 
 const API_URL = 'https://lipilaapi.pythonanywhere.com/api';
+// const API_URL = 'http://localhost:8000/api';
 
 // Create an instance for global config (like Auth tokens later)
 const api = axios.create({
@@ -21,6 +22,11 @@ api.interceptors.request.use((config) => {
 });
 
 export const db = {
+  getJobs: async (): Promise<JobPosition[]> => {
+    const res = await api.get('/jobs/');
+    return res.data;
+  },
+
   login: async (email: string, password: string) => {
     // DRF SimpleJWT expects 'username' by default. 
     // You may need to pass email as the username.

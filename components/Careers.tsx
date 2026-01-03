@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { JOBS, CULTURE_POINTS } from '../constants';
 import { Briefcase, MapPin, Clock, Calendar, DollarSign, Terminal, Send, CheckCircle } from 'lucide-react';
 import { ApplicationFormData } from '../types';
 import { db } from '../services/api';
 
 const Careers: React.FC = () => {
+  const [jobs, setJobs] = useState<JobPosition[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
   const [formData, setFormData] = useState<ApplicationFormData>({
     fullName: '',
@@ -23,6 +25,22 @@ const Careers: React.FC = () => {
     const formEl = document.getElementById('application-form');
     formEl?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const data = await db.getJobs();
+        setJobs(data);
+      } catch (err) {
+        console.error("Failed to load jobs", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchJobs();
+  }, []);
+
+  if (loading) return <div className="text-center py-20">Loading positions...</div>;
 
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
@@ -60,7 +78,8 @@ const Careers: React.FC = () => {
           <h2 className="text-indigo-600 font-bold tracking-wider uppercase text-sm mb-3">Careers</h2>
           <p className="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-6">Build the Future with Lipila</p>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-            We are expanding our team and inviting passionate, growth-oriented individuals to join us in shaping Zambia's digital horizon.
+            At Lipila Technologies, we’re always interested in connecting with curious, driven people who want to build meaningful technology.
+            Whether we’re actively hiring or simply starting conversations, we believe great teams grow through shared values and passion.
           </p>
         </div>
 
@@ -78,11 +97,11 @@ const Careers: React.FC = () => {
         <div className="space-y-10 max-w-5xl mx-auto mb-24">
           <div className="flex items-center justify-between mb-8 border-b border-slate-200 pb-4">
             <h3 className="text-2xl font-bold text-slate-900">Current Openings</h3>
-            <span className="text-sm font-semibold text-slate-500">Showing {JOBS.length} positions</span>
+            <span className="text-sm font-semibold text-slate-500">Showing {jobs.length} positions</span>
           </div>
 
           <div className="grid grid-cols-1 gap-8">
-            {JOBS.map((job) => (
+            {jobs.map((job) => (
               <div key={job.id} className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 hover:border-indigo-300 transition-all group">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
                   <div>
