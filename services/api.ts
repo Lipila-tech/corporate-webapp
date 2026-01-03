@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { ApplicationFormData, ContactMessage, Application, Employee, Customer } from '../types';
 
-const API_URL = 'http://localhost:8000/api';
+const API_URL = 'https://lipilaapi.pythonanywhere.com/api';
 
 // Create an instance for global config (like Auth tokens later)
 const api = axios.create({
