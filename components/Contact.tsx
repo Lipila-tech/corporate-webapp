@@ -20,6 +20,7 @@ const Contact: React.FC = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const validate = (field: keyof FormState, value: string): string => {
     switch (field) {
@@ -56,28 +57,34 @@ const Contact: React.FC = () => {
     setErrors(prev => ({ ...prev, [field]: error }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Validate all fields before submission
-    const newErrors: FormErrors = {};
-    const fields: (keyof FormState)[] = ['name', 'email', 'message'];
-    
-    fields.forEach(field => {
-      const error = validate(field, formState[field]);
-      if (error) newErrors[field] = error;
-    });
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  
+  // 1. Validation Logic (Remains synchronous)
+  const newErrors: FormErrors = {};
+  const fields: (keyof FormState)[] = ['name', 'email', 'message'];
+  
+  fields.forEach(field => {
+    const error = validate(field, formState[field]);
+    if (error) newErrors[field] = error;
+  });
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      setTouched({ name: true, email: true, message: true });
-      return;
-    }
+  if (Object.keys(newErrors).length > 0) {
+    setErrors(newErrors);
+    setTouched({ name: true, email: true, message: true });
+    return;
+  }
 
-    // Save to database
-    db.addMessage(formState);
+  // 2. Begin Async Submission
+  setSubmitting(true); // Ensure you have a 'submitting' state defined
+  
+  try {
+    // 3. Save to Django API
+    await db.addMessage(formState);
 
+    // 4. Success handling
     setSubmitted(true);
+    
     // Reset form after 5 seconds
     setTimeout(() => {
       setSubmitted(false);
@@ -85,7 +92,14 @@ const Contact: React.FC = () => {
       setTouched({});
       setErrors({});
     }, 5000);
-  };
+
+  } catch (error) {
+    console.error("Message failed to send:", error);
+    alert("Sorry, we couldn't send your message right now. Please try again later.");
+  } finally {
+    setSubmitting(false);
+  }
+};
 
   const renderError = (field: keyof FormState) => {
     if (touched[field] && errors[field]) {
@@ -200,26 +214,34 @@ const Contact: React.FC = () => {
                   {renderError('message')}
                 </div>
                 <button
-                  type="submit"
-                  disabled={submitted}
-                  className={`w-full py-4 rounded-xl font-bold text-lg flex items-center justify-center transition-all duration-300 transform active:scale-[0.98] ${
-                    submitted 
-                    ? 'bg-emerald-500 text-white cursor-default' 
-                    : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg shadow-indigo-200'
-                  }`}
-                >
-                  {submitted ? (
-                    <>
-                      <CheckCircle2 className="w-5 h-5 mr-2 animate-in zoom-in duration-300" />
-                      Message Sent!
-                    </>
-                  ) : (
-                    <>
-                      Send Message
-                      <Send className="ml-2 w-5 h-5" />
-                    </>
-                  )}
-                </button>
+                    type="submit"
+                    // Disable if already submitted OR if currently sending
+                    disabled={submitted || submitting}
+                    className={`w-full py-4 rounded-xl font-bold text-lg flex items-center justify-center transition-all duration-300 transform active:scale-[0.98] ${
+                      submitted 
+                        ? 'bg-emerald-500 text-white cursor-default' 
+                        : submitting
+                          ? 'bg-indigo-400 text-white cursor-wait' // Lighter color and wait cursor during API call
+                          : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg shadow-indigo-200'
+                    }`}
+                  >
+                    {submitted ? (
+                      <>
+                        <CheckCircle2 className="w-5 h-5 mr-2 animate-in zoom-in duration-300" />
+                        Message Sent!
+                      </>
+                    ) : submitting ? (
+                      <>
+                        <span className="animate-spin mr-3 text-2xl">🌀</span>
+                        Sending Your message...
+                      </>
+                    ) : (
+                      <>
+                        Send Message
+                        <Send className="ml-2 w-5 h-5" />
+                      </>
+                    )}
+                  </button>
               </form>
             </div>
           </div>

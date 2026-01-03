@@ -1,5 +1,5 @@
 // database.ts
-import { ApplicationFormData, ContactMessage } from '../types';
+import { ApplicationFormData, Message} from '../types';
 
 export type UserRole = 'admin' | 'viewer';
 
@@ -125,7 +125,7 @@ export const db = {
   getMessages: (): ContactMessage[] => getStorage(STORAGE_KEYS.MESSAGES, []),
   addMessage: (msg: { name: string; email: string; message: string }) => {
     const messages = db.getMessages();
-    const newMessage: ContactMessage = {
+    const newMessage: Message= {
       ...msg,
       id: Math.random().toString(36).substr(2, 9),
       dateSent: new Date().toISOString(),

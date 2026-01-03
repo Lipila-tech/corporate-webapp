@@ -22,10 +22,6 @@ export interface JobPosition {
   responsibilities?: string[];
 }
 
-export interface Message {
-  role: 'user' | 'model';
-  text: string;
-}
 
 export interface Employee {
   role: 'user' | 'model';
@@ -47,7 +43,7 @@ export interface EmployeeData {
   system_role: string;
 }
 
-export interface ContactMessage {
+export interface Message{
   id: string;
   name: string;
   email: string;

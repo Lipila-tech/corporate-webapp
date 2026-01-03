@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { ApplicationFormData, ContactMessage, Application, Employee, Customer } from '../types';
 
-const API_URL = 'https://lipilaapi.pythonanywhere.com/api';
+const API_URL = 'http://localhost:8000/api';
 
 // Create an instance for global config (like Auth tokens later)
 const api = axios.create({
@@ -77,6 +77,10 @@ export const db = {
     const res = await api.get('/messages/');
     return res.data;
 
+  },
+  addMessage: async (message: Message): Promise<Message[]> => {
+    const res = await api.post('/messages/', message);
+    return res.data;
   },
 
   addCustomer: async (customer: Omit<Customer, 'id'>) => {

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Users, Briefcase, UserPlus, Database, Search, 
-  LogOut, CheckCircle, XCircle, Clock, Trash2, Plus,
+  LogOut, CheckCircle, XCircle, Clock, Trash2, Plus, FileText, X,
   MessageSquare, Mail, User, Calendar, Shield, ShieldAlert
 } from 'lucide-react';
 import { db } from '../../services/api';
@@ -20,6 +20,8 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
+  const [showLetterModal, setShowLetterModal] = useState(false);
 
   // Form states
   const [showAddEmployee, setShowAddEmployee] = useState(false);
@@ -332,7 +334,7 @@ useEffect(() => {
                     </div>
                     <div className="flex items-center space-x-2">
                       <div className="text-xs text-slate-400 flex items-center mr-2">
-                        <Calendar size={12} className="mr-1" /> {new Date(msg.dateSent).toLocaleDateString()}
+                        <Calendar size={12} className="mr-1" /> {new Date(msg.date_sent).toLocaleDateString()}
                       </div>
                       {isAdmin && (
                         <>
@@ -387,11 +389,11 @@ useEffect(() => {
                     </td>
                     <td className="px-6 py-6 text-sm text-slate-600">
                       <div>{app.email}</div>
-                      {app.portfolioUrl && (
-                        <div>
-                          <a href={app.portfolioUrl} target="_blank" className="text-indigo-600 text-xs hover:underline">Portfolio/CV Link</a>
-                           | 
-                          <a href={app.githubUrl} target="_blank" className="text-indigo-600 text-xs hover:underline">Github/LinkedIn Link</a>
+                      {(app.portfolioUrl || app.githubUrl) && (
+                        <div className="mt-1">
+                          {app.portfolioUrl && <a href={app.portfolioUrl} target="_blank" className="text-indigo-600 text-xs hover:underline">Portfolio</a>}
+                          {app.portfolioUrl && app.githubUrl && <span className="mx-1 text-slate-300">|</span>}
+                          {app.githubUrl && <a href={app.githubUrl} target="_blank" className="text-indigo-600 text-xs hover:underline">GitHub</a>}
                         </div>
                       )}
                     </td>
@@ -402,29 +404,43 @@ useEffect(() => {
                       }`}>
                         {app.status}
                       </span>
-                      <div className="text-[10px] text-slate-400 mt-1">{new Date(app.dateSubmitted).toLocaleDateString()}</div>
+                      <div className="text-[10px] text-slate-400 mt-1">{new Date(app.date_submitted).toLocaleDateString()}</div>
                     </td>
                     <td className="px-6 py-6 text-right">
-                      {isAdmin && (
-                        <div className="flex justify-end space-x-2">
+                      <div className="flex justify-end items-center space-x-2">
+                        {/* NEW: View Letter Button */}
+                        {app.coverLetter && (
                           <button 
-                            onClick={() => handleUpdateApplicationStatus(app.id, 'accepted')}
-                            className="p-2 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                            onClick={() => { setSelectedLetter(app.coverLetter); setShowLetterModal(true); }}
+                            className="px-3 py-1.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors flex items-center"
                           >
-                            <CheckCircle size={18} />
+                            <FileText size={14} className="mr-1" />
+                            Letter
                           </button>
-                          <button 
-                            onClick={() => handleUpdateApplicationStatus(app.id, 'rejected')}
-                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                          >
-                            <XCircle size={18} />
-                          </button>
-                        </div>
-                      )}
+                        )}
+
+                        {isAdmin && (
+                          <div className="flex space-x-1 border-l pl-2 border-slate-200">
+                            <button 
+                              onClick={() => handleUpdateApplicationStatus(app.id, 'accepted')}
+                              className="p-2 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                              title="Accept"
+                            >
+                              <CheckCircle size={18} />
+                            </button>
+                            <button 
+                              onClick={() => handleUpdateApplicationStatus(app.id, 'rejected')}
+                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                              title="Reject"
+                            >
+                              <XCircle size={18} />
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}
-
                 {activeTab === 'employees' && filteredData().map((emp: any) => (
                   <tr key={emp.id} className="hover:bg-slate-50 transition-colors">
                     <td className="px-6 py-6">
@@ -565,6 +581,38 @@ useEffect(() => {
                 <button type="submit" className="flex-1 py-3 bg-indigo-600 text-white rounded-xl font-bold">Save Customer</button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+      {/* Cover Letter Modal */}
+      {showLetterModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col animate-in zoom-in-95 duration-200">
+            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+              <h3 className="font-bold text-slate-900 flex items-center">
+                <FileText className="w-5 h-5 mr-2 text-indigo-600" />
+                Cover Letter
+              </h3>
+              <button 
+                onClick={() => setShowLetterModal(false)}
+                className="p-2 hover:bg-slate-200 rounded-full transition-colors"
+              >
+                <X size={20} className="text-slate-500" />
+              </button>
+            </div>
+            
+            <div className="px-8 py-8 overflow-y-auto text-slate-700 leading-relaxed whitespace-pre-wrap">
+              {selectedLetter || "No cover letter provided."}
+            </div>
+
+            <div className="px-6 py-4 border-t border-slate-100 bg-slate-50/50 text-right">
+              <button 
+                onClick={() => setShowLetterModal(false)}
+                className="px-6 py-2 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition-all"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
