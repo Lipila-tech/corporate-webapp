@@ -15,7 +15,8 @@ If someone asks about jobs, mention they can find current openings on the Career
 
 export async function askAssistant(prompt: string) {
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+    const ai = new GoogleGenAI({ apiKey: apiKey || '' });
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: prompt,
@@ -26,7 +27,6 @@ export async function askAssistant(prompt: string) {
     });
     return response.text || "I'm sorry, I couldn't process that request right now.";
   } catch (error) {
-    console.error("Gemini API Error:", error);
     return "The Lipila Assistant is currently offline. Please try again later.";
   }
 }
