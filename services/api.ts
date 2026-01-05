@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ApplicationFormData, ContactMessage, Application, Employee, Customer, JobPosition } from '../types';
+import { ApplicationFormData, Message, EmployeeData, Customer, JobPosition } from '../types';
 
 const API_URL = 'https://lipilaapi.pythonanywhere.com/api';
 // const API_URL = 'http://localhost:8000/api';
@@ -36,7 +36,7 @@ export const db = {
     return res.data;
   },
 
-  getCurrentUser: async (): Promise<Employee> => {
+  getCurrentUser: async (): Promise<EmployeeData> => {
     const res = await api.get('/me/');
     return res.data;
   },
@@ -45,17 +45,17 @@ export const db = {
   hasToken: () => !!localStorage.getItem('access_token'),
 
   // Applications
-  getApplications: async (): Promise<Application[]> => {
+  getApplications: async (): Promise<ApplicationFormData[]> => {
     const res = await api.get('/applications/');
     return res.data;
   },
   
-  addApplication: async (appData: ApplicationFormData): Promise<Application> => {
+  addApplication: async (appData: ApplicationFormData): Promise<ApplicationFormData> => {
     const res = await api.post('/applications/', appData);
     return res.data;
   },
 
-  addEmployee: async (empData: EmployeeFormData): Promise<Employee> => {
+  addEmployee: async (empData: EmployeeData): Promise<EmployeeData> => {
     const res = await api.post('/employees/', empData);
     return res.data;
   },
@@ -65,7 +65,7 @@ export const db = {
   },
 
   // Employees
-  getEmployees: async (): Promise<Employee[]> => {
+  getEmployees: async (): Promise<EmployeeData[]> => {
     const res = await api.get('/employees/');
     return res.data;
   },
@@ -79,6 +79,11 @@ export const db = {
     const res = await api.get('/customers/');
     return res.data;
   },
+
+  deleteCustomer: async (id: string) => {
+    await api.delete(`/customers/${id}/`);
+  },
+  
   getMessages: async (): Promise<Message[]> => {
     const res = await api.get('/messages/');
     return res.data;
@@ -87,6 +92,14 @@ export const db = {
   addMessage: async (message: Message): Promise<Message[]> => {
     const res = await api.post('/messages/', message);
     return res.data;
+  },
+
+  updateMessageStatus: async (id: string, status: string) => {
+    await api.patch(`/messages/${id}/`, { status });
+  },
+
+  deleteMessage: async (id: string) => {
+    await api.delete(`/messages/${id}/`);
   },
 
   addCustomer: async (customer: Omit<Customer, 'id'>) => {

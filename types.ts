@@ -22,11 +22,14 @@ export interface JobPosition {
   responsibilities?: string[];
 }
 
-
-export interface Employee {
-  role: 'user' | 'model';
-  text: string;
+export interface Customer{
+  id: string;
+  name: string;
+  industry: string;
+  logoUrl: string;
+  testimonial: string;
 }
+
 
 export interface ApplicationFormData {
   fullName: string;
@@ -35,6 +38,7 @@ export interface ApplicationFormData {
   portfolioUrl: string;
   githubUrl: string;
   coverLetter: string;
+  status: 'pending' | 'reviewed' | 'interviewed' | 'hired' | 'rejected';
 }
 
 export interface EmployeeData {
@@ -50,4 +54,20 @@ export interface Message{
   message: string;
   dateSent: string;
   status: 'new' | 'read' | 'archived';
+}
+
+
+export interface Contact {
+  id: string;
+  name: string;
+  email: string;
+  message: string;
+  dateSent: string;
+  status: 'new' | 'read' | 'archived';
+}
+
+export interface UserRole {
+  id: string;
+  name: string;
+  permissions: string[];
 }
