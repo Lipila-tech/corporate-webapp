@@ -404,7 +404,12 @@ useEffect(() => {
                       }`}>
                         {app.status}
                       </span>
-                      <div className="text-[10px] text-slate-400 mt-1">{new Date(app.date_submitted).toLocaleDateString()}</div>
+                      <div className="text-[10px] text-slate-400 mt-1">
+                        {new Date(app.dateSubmitted).toLocaleString([], {
+                          dateStyle: 'short',
+                          timeStyle: 'short'
+                        })}
+                      </div>
                     </td>
                     <td className="px-6 py-6 text-right">
                       <div className="flex justify-end items-center space-x-2">
