@@ -415,7 +415,7 @@ useEffect(() => {
                     <tr key={app.id} className="hover:bg-slate-50 transition-colors">
                       <td className="px-3 md:px-6 py-4 md:py-6">
                         <div className="font-bold text-slate-900 truncate">{app.fullName}</div>
-                        <div className="text-xs text-slate-500 uppercase tracking-tight truncate">{app.roleId}</div>
+                        <div className="text-xs text-slate-500 uppercase tracking-tight truncate">{app.JobTitle}</div>
                       </td>
                       <td className="px-3 md:px-6 py-4 md:py-6 text-sm text-slate-600">
                         <div className="truncate">{app.email}</div>
