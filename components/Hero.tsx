@@ -47,8 +47,8 @@ const Hero: React.FC = () => {
             </h1>
 
             <p className="text-lg sm:text-xl text-slate-600 mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium">
-              Running a business today is hard when systems don’t talk to each other, payments fail, or software doesn’t fit your needs. 
-              Lipila Technologies helps businesses grow by building reliable SaaS platforms, secure payment systems, and custom software that simply works.
+              Lipila is a Zambian technology company building cloud-based software and payment solutions for small businesses, sole proprietors, and growing enterprises across Africa.
+              We're the bridge between your business and mobile money — helping you accept payments, manage operations, and scale without the complexity.
             </p>
 
 
@@ -71,9 +71,9 @@ const Hero: React.FC = () => {
             <div className="mt-16 flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-8 text-slate-400">
               <span className="text-xs font-bold tracking-widest uppercase">TRUSTED BY TEAMS AT:</span>
               <div className="flex items-center space-x-6 grayscale opacity-60">
-                <span className="font-black text-xl tracking-tighter italic">GOA</span>
-                <span className="font-black text-xl tracking-tighter italic">VETICARE</span>
-                <span className="font-black text-xl tracking-tighter italic">SCHADMIN</span>
+                <span className="font-black text-xl tracking-tighter italic">Switch Connections</span>
+                <span className="font-black text-xl tracking-tighter italic">VetiCare</span>
+                <span className="font-black text-xl tracking-tighter italic">Kygro</span>
               </div>
             </div>
           </div>

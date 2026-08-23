@@ -141,7 +141,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <div className="text-slate-400 text-sm">Email Support</div>
-                  <div className="text-xl font-bold">lipilatechnologies@gmail.com</div>
+                  <div className="text-xl font-bold">service@lipila.tech</div>
                 </div>
               </div>
               

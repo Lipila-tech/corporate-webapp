@@ -6,38 +6,38 @@ import { Service, JobPosition } from './types';
 export const SERVICES: Service[] = [
   {
   id: 'custom',
-  title: 'Custom Software',
-  description: 'When off-the-shelf software can’t solve your problem, we design and build systems tailored specifically to how your business works.',
+  title: 'Cloud Software Built for Your Business',
+  description: "You're running a small business or solo operation, but standard software doesn't fit. We build cloud systems tailored to how you actually work — no complicated setup, no bloated features, just what you need.",
   icon: 'Code',
   category: 'Enterprise',
   benefits: [
-    'Software built exactly for your workflow',
-    'You fully own the system and data',
-    'Easy integration with existing tools'
+    'Software designed for your exact workflow',
+    'Cloud-based (access from anywhere, anytime)',
+    'You own your data, we manage the technology'
   ]
 },
   {
   id: 'saas',
-  title: 'SaaS Platforms',
-  description: 'We build cloud-based software you can access anytime, anywhere. Our SaaS platforms help businesses manage education, HR, finance, and operations without complicated setups.',
+  title: 'Ready-Made Cloud Platforms',
+  description: 'We build complete platforms for specific industries. From creator monetization (Tipzed) to school management (SchAdmin), our cloud software lets you focus on your business while we handle the technology. No coding required.',
   icon: 'Layout',
   category: 'SaaS',
   benefits: [
-    'Grow users without changing systems',
-    'Lower IT and maintenance costs',
-    'Access real-time data from anywhere'
+    'Scale from day one without changing systems',
+    'Automatic updates and security patches included',
+    'Real-time insights from your data'
   ]
 },
 {
   id: 'payments',
-  title: 'Payment Systems',
-  description: 'We build secure payment systems that allow businesses to collect and send money reliably using mobile money and digital channels.',
+  title: 'Mobile Money Payment Bridge',
+  description: "Can't get direct access to Airtel, MTN, or Zamtel APIs? We bridge that gap. Our Limopay API lets you integrate mobile money payments into your system without the hassle of dealing with multiple providers or complex integrations.",
   icon: 'CreditCard',
   category: 'Payments',
   benefits: [
-    'MTN, Airtel, and Zamtel mobile money support',
-    'Secure and compliant transactions',
-    'Reduced payment failures and fraud risk'
+    'Accept payments from any mobile network',
+    'Automatic settlement and reconciliation',
+    'Zero setup fees, transparent pricing'
   ]
 }
 
@@ -45,11 +45,11 @@ export const SERVICES: Service[] = [
 ];
 
 export const TAGLINES = [
-  "Building Zambia’s Digital Future.",
-  "Software That Grows With Your Business.",
-  "Payments That Just Work.",
-  "Custom Systems, Built for You.",
-  "Technology That Empowers Education."
+  "Zambian Tech, African Scale.",
+  "Mobile Money Integration That Works.",
+  "Software for Small Businesses. Built Here.",
+  "Payments Without API Access Limits.",
+  "Technology That Grows with African Business."
 ];
 
 

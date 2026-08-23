@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Services from './components/Services';
+import Products from './components/Products';
+import WhyLipila from './components/WhyLipila';
+import Impact from './components/Impact';
+import CaseStudies from './components/CaseStudies';
+import FAQ from './components/FAQ';
 import About from './components/About';
 import Careers from './components/Careers';
 import Contact from './components/Contact';
@@ -64,6 +69,11 @@ const App: React.FC = () => {
       <main>
         <Hero />
         <Services />
+        <Products />
+        <WhyLipila />
+        <Impact />
+        <CaseStudies />
+        <FAQ />
         <About />
         <Careers />
         <Contact />

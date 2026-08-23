@@ -19,21 +19,23 @@ const About: React.FC = () => {
           <div className="flex-1">
             <h2 className="text-indigo-600 font-bold tracking-wider uppercase text-sm mb-3">About Lipila</h2>
             <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-              Lipila Technologies Limited was founded to solve a simple problem: many African businesses are forced to use software that was never designed for their realities.
-              What started as a small consultancy has grown into a multi-product technology company building practical, reliable systems for real-world use.
+              Lipila Technologies Limited is a Zambian software company founded to solve a critical problem: small businesses and sole proprietors in Africa can't easily access mobile money payment systems without complex API requirements and multiple intermediaries.
             </p>
 
             <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-              We combine deep local understanding with global engineering standards to deliver solutions that are secure, scalable, and easy to use — whether you’re a growing startup or an established enterprise.
+              We're building the bridge. Through our cloud-based platforms and Limopay API gateway, we make it simple for businesses to accept mobile money payments, manage operations, and scale across Africa — all without needing deep technical knowledge or expensive infrastructure.
             </p>
 
+            <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+              Our products include Tipzed (helping creators monetize content), SchAdmin (school management system), and Limopay (mobile money integration platform). Each solves real problems for real African businesses.
+            </p>
             
             <ul className="space-y-4">
               {[
-                "Local expertise with global standards",
-                "Customer-centric software architecture",
-                "Robust security and data privacy",
-                "Scalable infrastructure for growing businesses"
+                "Built by Africans, for African markets",
+                "Designed for small businesses and creators",
+                "Cloud-based, accessible from anywhere",
+                "Mobile-first payments without API complexity"
               ].map((item, idx) => (
                 <li key={idx} className="flex items-start">
                   <div className="mt-1 mr-3 text-emerald-500">

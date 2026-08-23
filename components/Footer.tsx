@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
               <span className="text-2xl font-extrabold text-white">Lipila</span>
             </div>
             <p className="mb-8 max-w-xs leading-relaxed">
-              Innovative technology solutions for the modern African enterprise. Based in Kitwe, serving the world.
+              A Zambian technology company building cloud software and payment bridges for African businesses.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="hover:text-indigo-400 transition-colors"><Twitter size={20} /></a>
@@ -28,10 +28,10 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="text-white font-bold mb-6">Solutions</h4>
             <ul className="space-y-4">
-              <li><a href="#" className="hover:text-white transition-colors">Payment Gateways</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Retail POS</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Education ERP</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Custom Dev</a></li>
+              <li><a href="#products" className="hover:text-white transition-colors">Tipzed</a></li>
+              <li><a href="#products" className="hover:text-white transition-colors">SchAdmin</a></li>
+              <li><a href="#products" className="hover:text-white transition-colors">Limopay</a></li>
+              <li><a href="#solutions" className="hover:text-white transition-colors">Custom software</a></li>
             </ul>
           </div>
 
@@ -47,16 +47,9 @@ const Footer: React.FC = () => {
 
           <div>
             <h4 className="text-white font-bold mb-6">Stay Updated</h4>
-            <p className="text-sm mb-4">Subscribe to our newsletter for tech insights.</p>
+            <p className="text-sm mb-4">Questions about a product or payment integration?</p>
             <div className="flex">
-              <input
-                type="email"
-                placeholder="email@example.com"
-                className="bg-slate-800 border-none rounded-l-lg px-4 py-2 w-full focus:ring-1 focus:ring-indigo-500 outline-none"
-              />
-              <button className="bg-indigo-600 text-white px-4 py-2 rounded-r-lg font-bold hover:bg-indigo-700">
-                Join
-              </button>
+              <a href="mailto:service@lipila.tech" className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-indigo-700">Email us</a>
             </div>
           </div>
         </div>
