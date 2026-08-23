@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, CreditCard, Sparkles } from 'lucide-react';
 import { TAGLINES } from '../constants';
 import GoogleImage from './GoogleImage'
 
@@ -85,13 +85,13 @@ const Hero: React.FC = () => {
               </div>
               
               {/* Floating Badge */}
-              <div className="absolute -bottom-4 sm:-bottom-8 -left-2 sm:-left-8 bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 flex items-center space-x-4 animate-bounce hover:animate-none transition-all cursor-default hidden sm:flex">
-                <div className="w-10 h-10 sm:w-14 sm:h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center">
-                  <ArrowRight className="w-6 h-6" />
+              <div className="absolute -bottom-5 right-4 sm:-bottom-6 sm:right-6 bg-white/95 p-3 sm:p-4 rounded-xl sm:rounded-2xl shadow-xl border border-slate-100 flex items-center space-x-3 animate-bounce hover:animate-none transition-all cursor-default hidden sm:flex">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center">
+                  <CreditCard className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="font-extrabold text-slate-900 text-sm sm:text-base">+24% Efficiency</div>
-                  <div className="text-xs text-slate-500">Real-time SaaS monitoring</div>
+                  <div className="font-extrabold text-slate-900 text-sm sm:text-base">Mobile money, made simpler</div>
+                  <div className="text-xs text-slate-500">One bridge for business payments</div>
                 </div>
               </div>
 
