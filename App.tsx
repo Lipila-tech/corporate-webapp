@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Services from './components/Services';
+import Cybersecurity from './components/Cybersecurity';
+import Investigations from './components/Investigations';
 import Products from './components/Products';
 import WhyLipila from './components/WhyLipila';
 import Impact from './components/Impact';
@@ -69,6 +71,8 @@ const App: React.FC = () => {
       <main>
         <Hero />
         <Services />
+        <Cybersecurity />
+        <Investigations />
         <Products />
         <WhyLipila />
         <Impact />

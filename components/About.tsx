@@ -19,11 +19,11 @@ const About: React.FC = () => {
           <div className="flex-1">
             <h2 className="text-indigo-600 font-bold tracking-wider uppercase text-sm mb-3">About Lipila</h2>
             <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-              Lipila Technologies Limited is a Zambian software company founded to solve a critical problem: small businesses and sole proprietors in Africa can't easily access mobile money payment systems without complex API requirements and multiple intermediaries.
+              Lipila Technologies Limited is a Zambian technology and investigations company. Founded as Pesa Consulting &amp; Investigations in 2013, the company was incorporated in 2014 as Lipila Technologies Limited.
             </p>
 
             <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-              We're building the bridge. Through our cloud-based platforms and Limopay API gateway, we make it simple for businesses to accept mobile money payments, manage operations, and scale across Africa — all without needing deep technical knowledge or expensive infrastructure.
+              Today, we combine cloud-based platforms and the Limopay API gateway with dedicated cybersecurity services, including IT vulnerability assessments, system upgrades, penetration testing, and malware analysis. We also support private and corporate clients through discreet, evidence-led investigations.
             </p>
 
             <p className="text-lg text-slate-600 mb-8 leading-relaxed">
@@ -32,10 +32,10 @@ const About: React.FC = () => {
             
             <ul className="space-y-4">
               {[
-                "Built by Africans, for African markets",
+                "Built in Zambia, with an African perspective",
                 "Designed for small businesses and creators",
                 "Cloud-based, accessible from anywhere",
-                "Mobile-first payments without API complexity"
+                "Practical cybersecurity and investigations support"
               ].map((item, idx) => (
                 <li key={idx} className="flex items-start">
                   <div className="mt-1 mr-3 text-emerald-500">

@@ -132,7 +132,10 @@ const Contact: React.FC = () => {
         <div className="flex flex-col lg:flex-row gap-20">
           <div className="flex-1">
             <h2 className="text-indigo-400 font-bold tracking-wider uppercase text-sm mb-4">Contact Us</h2>
-            <p className="text-4xl lg:text-5xl font-extrabold mb-8">Let's build something <span className="text-indigo-400">extraordinary</span> together.</p>
+            <p className="text-4xl lg:text-5xl font-extrabold mb-8">Let&apos;s solve your <span className="text-indigo-400">next challenge</span> together.</p>
+            <p className="text-lg text-slate-300 max-w-xl leading-relaxed">
+              Ask us about cloud software, mobile-money integration, cybersecurity services, or a confidential corporate investigation.
+            </p>
             
             <div className="space-y-8 mt-12">
               <div className="flex items-start space-x-4">

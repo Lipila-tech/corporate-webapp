@@ -2,6 +2,8 @@ import React from 'react';
 
 const QUESTIONS = [
   ['Can you help if we cannot access a mobile money API?', 'Yes. Limopay is designed to bridge that gap so your app or business system can accept mobile money without managing every provider integration yourself.'],
+  ['What cybersecurity services do you provide?', 'We provide IT vulnerability assessments, system upgrades, penetration testing, and malware analysis to help organisations understand and reduce digital risk.'],
+  ['Do you handle private or corporate investigations?', 'Yes. Our investigations practice supports private and corporate clients internationally through discreet, fact-based inquiries. Contact us to discuss a confidential matter.'],
   ['Do I need a technical team to use your products?', 'No. Our SaaS platforms are designed for everyday teams. For custom systems, we explain the process and manage the technical work with you.'],
   ['Who do you work with?', 'We work with creators, schools, small businesses, sole proprietors, startups, and organisations that need practical digital tools.'],
 ];
