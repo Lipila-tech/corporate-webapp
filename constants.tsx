@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Layout, CreditCard, Code, GraduationCap, ShoppingBag, Building2, Briefcase, Guitar, Rocket, Heart, TrendingUp, Users, ShieldCheck, SearchCheck, RefreshCw, Bug } from 'lucide-react';
+import { Layout, CreditCard, Code, GraduationCap, ShoppingBag, Building2, Briefcase,Guitar, Rocket, Heart, TrendingUp, Users } from 'lucide-react';
 import { Service, JobPosition } from './types';
 
 export const SERVICES: Service[] = [
@@ -39,30 +39,6 @@ export const SERVICES: Service[] = [
     'Automatic settlement and reconciliation',
     'Zero setup fees, transparent pricing'
   ]
-},
-{
-  id: 'cybersecurity',
-  title: 'Cybersecurity Services',
-  description: 'We help organisations identify weaknesses, strengthen systems, and respond to digital threats with practical, focused security support.',
-  icon: 'ShieldCheck',
-  category: 'Cybersecurity',
-  benefits: [
-    'IT vulnerability assessments',
-    'Penetration testing and security reviews',
-    'Malware analysis and system upgrades'
-  ]
-},
-{
-  id: 'investigations',
-  title: 'Corporate Investigations',
-  description: 'Our investigations practice supports organisations and private clients with discreet, fact-based inquiries that help clarify risks and make informed decisions.',
-  icon: 'SearchCheck',
-  category: 'Investigations',
-  benefits: [
-    'Confidential and professional engagement',
-    'Evidence-led reporting',
-    'Support for corporate and private matters'
-  ]
 }
 
 
@@ -73,8 +49,7 @@ export const TAGLINES = [
   "Mobile Money Integration That Works.",
   "Software for Small Businesses. Built Here.",
   "Payments Without API Access Limits.",
-  "Technology That Grows with African Business.",
-  "Safer Systems. Clearer Decisions."
+  "Technology That Grows with African Business."
 ];
 
 
@@ -178,9 +153,5 @@ export const ICON_MAP: Record<string, React.ReactNode> = {
   Building2: <Building2 className="w-6 h-6" />,
   Briefcase: <Briefcase className="w-6 h-6" />,
   Guitar: <Guitar className="w-6 h-6" />,
-  Rocket: <Rocket className="w-6 h-6" />,
-  ShieldCheck: <ShieldCheck className="w-6 h-6" />,
-  SearchCheck: <SearchCheck className="w-6 h-6" />,
-  RefreshCw: <RefreshCw className="w-6 h-6" />,
-  Bug: <Bug className="w-6 h-6" />
+  Rocket: <Rocket className="w-6 h-6" />
 };

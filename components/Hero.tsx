@@ -47,8 +47,8 @@ const Hero: React.FC = () => {
             </h1>
 
             <p className="text-lg sm:text-xl text-slate-600 mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium">
-              Lipila Technologies is a Zambian company delivering cloud software, payment solutions, cybersecurity services, and discreet corporate investigations.
-              We help businesses strengthen systems, understand risk, and grow with confidence in Zambia and across Africa.
+              Lipila is a Zambian technology company building cloud-based software and payment solutions for small businesses, sole proprietors, and growing enterprises across Africa.
+              We're the bridge between your business and mobile money — helping you accept payments, manage operations, and scale without the complexity.
             </p>
 
 
@@ -57,7 +57,7 @@ const Hero: React.FC = () => {
                 href="#solutions"
                 className="w-full sm:w-auto px-10 py-4 bg-indigo-600 text-white rounded-2xl font-bold text-lg hover:bg-indigo-700 shadow-xl shadow-indigo-200 transition-all flex items-center justify-center group transform hover:-translate-y-1"
               >
-                Explore Our Services
+                Our Solutions
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
               </a>
               <a

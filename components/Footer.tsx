@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
               <span className="text-2xl font-extrabold text-white">Lipila</span>
             </div>
             <p className="mb-8 max-w-xs leading-relaxed">
-              A Zambian company delivering cloud software, payment solutions, cybersecurity services, and discreet investigations.
+              A Zambian technology company building cloud software and payment bridges for African businesses.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="hover:text-indigo-400 transition-colors"><Twitter size={20} /></a>
@@ -32,8 +32,6 @@ const Footer: React.FC = () => {
               <li><a href="#products" className="hover:text-white transition-colors">SchAdmin</a></li>
               <li><a href="#products" className="hover:text-white transition-colors">Limopay</a></li>
               <li><a href="#solutions" className="hover:text-white transition-colors">Custom software</a></li>
-              <li><a href="#cybersecurity" className="hover:text-white transition-colors">Cybersecurity</a></li>
-              <li><a href="#investigations" className="hover:text-white transition-colors">Investigations</a></li>
             </ul>
           </div>
 
